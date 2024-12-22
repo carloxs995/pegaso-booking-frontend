@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/pegaso-booking",
+            "outputPath": "public",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -100,5 +100,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "cb5f2808-6ab8-48b9-bc4e-6a8551454eec"
   }
 }
