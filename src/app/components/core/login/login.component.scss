@@ -1,0 +1,14 @@
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 20px !important;
+}
+
+.title {
+    text-align: center;
+}
+
+mat-form-field {
+    width: 100%;
+}
