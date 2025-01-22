@@ -1,19 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './components/core/navbar/navbar.component';
 
 @Component({
     selector: 'app-root',
+    standalone: true,
+    imports: [
+        NavbarComponent,
+        RouterOutlet
+    ],
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    standalone: false
+    styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
     title = 'pegaso-booking';
-
-    ngOnInit(): void {
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth, '', '')
-            .then((userCredential) => console.log(userCredential.user))
-            .catch((error) => console.error(error));
-    }
 }
