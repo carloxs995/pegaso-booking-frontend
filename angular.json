@@ -66,10 +66,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "pegaso-booking:build:production"
+              "buildTarget": "pegaso-booking:build:production"
             },
             "development": {
-              "browserTarget": "pegaso-booking:build:development"
+              "buildTarget": "pegaso-booking:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,7 +77,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "pegaso-booking:build"
+            "buildTarget": "pegaso-booking:build"
           }
         },
         "test": {
