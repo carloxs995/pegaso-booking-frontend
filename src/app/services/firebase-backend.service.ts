@@ -10,18 +10,9 @@ export class FirebaseBackendService {
 
     constructor(private httpClient: HttpClient) { }
 
-    setAccessToken(token: string): void {
-        localStorage.setItem('access_token', token);
-    }
-
-    private getAuthToken(): string {
-        return localStorage.getItem('access_token') || '';
-    }
-
     private getHeaders(): HttpHeaders {
         return new HttpHeaders({
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.getAuthToken()}`
         });
     }
 

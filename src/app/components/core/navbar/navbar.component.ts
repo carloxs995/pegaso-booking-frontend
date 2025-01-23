@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { getAuth } from 'firebase/auth';
 
 @Component({
     selector: 'navbar',
@@ -28,6 +29,12 @@ export class NavbarComponent {
 
     logout() {
         console.log('Logging out...');
+
+        getAuth().signOut()
+            .then(() => window.location.reload())
+            .catch(e => console.log(e));
+
+
     }
 
     openLoginDialog(): void {

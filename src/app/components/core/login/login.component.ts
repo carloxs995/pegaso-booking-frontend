@@ -34,10 +34,16 @@ export class LoginComponent {
         this.authenticationService.loginWithEmail({
             username: this.user.email,
             password: this.user.password
-        }).subscribe(res => {
-            this.isLoading = false;
-            console.log('User:', res);
-            this.dialogRef.close();
+        }).subscribe({
+            next: res => {
+                this.isLoading = false;
+                console.log('User:', res);
+                this.dialogRef.close();
+            },
+            error: err => {
+                this.isLoading = false;
+                console.log(err?.message);
+            }
         })
     }
 

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { catchError, concatMap, from, map, Observable, of, tap, throwError } from 'rxjs';
-import { Auth, getAuth, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, catchError, concatMap, from, map, Observable, of, tap, throwError } from 'rxjs';
+import { Auth, getAuth, onAuthStateChanged, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
 import { FirebaseBackendService } from './firebase-backend.service';
 import { UserDetails } from '../models/user.model';
 
@@ -9,30 +9,19 @@ import { UserDetails } from '../models/user.model';
 })
 export class AuthenticationService {
 
-    private _auth: Auth;
+    readonly currentUserData$: BehaviorSubject<UserDetails | null> = new BehaviorSubject<UserDetails | null>(null);
 
-    private _currentUserData: UserDetails | undefined;
+    private _auth: Auth = getAuth();
 
-    get currentUserData(): UserDetails | undefined {
-        return this._currentUserData;
-    }
-
-    constructor(
-        private readonly _firebaseBackendService: FirebaseBackendService
-    ) {
-        this._auth = getAuth();
-        // this._auth.authStateReady().then
-    }
+    private readonly _firebaseBackendService: FirebaseBackendService = inject(FirebaseBackendService);
 
     loginWithEmail(credentials: { username: string, password: string }): Observable<UserDetails> {
         return from(signInWithEmailAndPassword(this._auth, credentials.username, credentials.password))
             .pipe(
-                concatMap(res => res.user.getIdToken()),
-                map(accessToken => this._firebaseBackendService.setAccessToken(accessToken)),
                 concatMap(() => this.getUserInfo()),
                 catchError(e => {
                     console.error(`login With Email ${e}`);
-                    return throwError(() => of({}));
+                    return throwError(() => e);
                 })
             );
     }
@@ -41,7 +30,7 @@ export class AuthenticationService {
         return this._firebaseBackendService.get<{ data: UserDetails }>('/users/me')
             .pipe(
                 map(res => res.data),
-                tap(userDetails => this._currentUserData = userDetails)
+                tap(userDetails => this.currentUserData$.next(userDetails))
             );
     }
 }
