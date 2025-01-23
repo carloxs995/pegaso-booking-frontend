@@ -27,11 +27,11 @@
     </div>
 
     <div class="user-info">
-        <ng-container *ngIf="!isLogged; else loggedInfo">
+        <ng-container *ngIf="isLogged; else loggedInfo">
             <button mat-raised-button color="accent" (click)="openLoginDialog()">Login</button>
         </ng-container>
         <ng-template #loggedInfo>
-            <span>{{ user.name }}</span>
+            <span>{{ authenticationService.currentUserData?.firstName + ' ' + authenticationService.currentUserData?.lastName }}</span>
             <button mat-icon-button [matMenuTriggerFor]="userMenu">
                 <img [src]="user.profileImage" alt="User Avatar" class="avatar">
             </button>

@@ -5,6 +5,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { environment } from 'environment';
+import { provideHttpClient } from '@angular/common/http';
 
 const firebaseConfig: FirebaseOptions = {
     apiKey: environment.firebaseConfig.apiKey,
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     providers: [
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes),
-        provideAnimations()
+        provideAnimations(),
+        provideHttpClient(),
     ]
 };

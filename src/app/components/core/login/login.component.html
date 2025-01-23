@@ -1,18 +1,23 @@
 <h2 class="title" mat-dialog-title>Login</h2>
 
 <mat-dialog-content class="dialog-content">
-  <mat-form-field appearance="outline">
-    <mat-label>Email</mat-label>
-    <input matInput [(ngModel)]="user.email" type="email" placeholder="Inserisci la tua email">
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="user.email" type="email" placeholder="Inserisci la tua email">
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Password</mat-label>
-    <input matInput [(ngModel)]="user.password" type="password" placeholder="Inserisci la tua password">
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="user.password" type="password" placeholder="Inserisci la tua password">
+    </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-  <button mat-button (click)="onCancel()">Annulla</button>
-  <button mat-raised-button color="primary" (click)="onLogin()">Login</button>
+    <ng-container *ngIf="!isLoading; else spinner">
+        <button mat-button (click)="onCancel()">Annulla</button>
+        <button mat-raised-button color="primary" (click)="onLogin()">Login</button>
+    </ng-container>
+    <ng-template #spinner>
+        <mat-spinner [diameter]="40"></mat-spinner>
+    </ng-template>
 </mat-dialog-actions>

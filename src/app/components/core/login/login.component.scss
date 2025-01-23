@@ -1,3 +1,10 @@
+@use '@angular/material' as mat;
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+mat-spinner {
+    width: 30px;
+}
+
 .dialog-content {
     display: flex;
     flex-direction: column;
