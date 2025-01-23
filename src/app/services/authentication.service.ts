@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, concatMap, from, map, Observable, of, tap, throwError } from 'rxjs';
-import { Auth, getAuth, onAuthStateChanged, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import { BehaviorSubject, catchError, concatMap, from, map, Observable, tap, throwError } from 'rxjs';
+import { Auth, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { FirebaseBackendService } from './firebase-backend.service';
-import { UserDetails } from '../models/user.model';
+import { UserDetails, UserRegistration } from '../models/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -31,6 +31,13 @@ export class AuthenticationService {
             .pipe(
                 map(res => res.data),
                 tap(userDetails => this.currentUserData$.next(userDetails))
+            );
+    }
+
+    createUser(request: UserRegistration): Observable<UserDetails> {
+        return this._firebaseBackendService.post('/users', request)
+            .pipe(
+                concatMap(() => this.loginWithEmail({ username: request.email, password: request.password }))
             );
     }
 }

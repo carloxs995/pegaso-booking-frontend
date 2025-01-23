@@ -11,3 +11,10 @@ export interface UserDetails {
     lastName: string,
     role: UserRole
 }
+
+export interface UserRegistration {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+}

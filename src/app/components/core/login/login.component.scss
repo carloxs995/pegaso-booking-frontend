@@ -1,6 +1,15 @@
 @use '@angular/material' as mat;
 
 // Customize the entire app. Change :root to your selector if you want to scope the styles.
+:root {
+  @include mat.snack-bar-overrides((
+    container-color: red,
+    supporting-text-color: white,
+    button-color: black
+  ));
+}
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
 mat-spinner {
     width: 30px;
 }
@@ -18,4 +27,27 @@ mat-spinner {
 
 mat-form-field {
     width: 100%;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    font-size: 20px;
+
+    &::after,
+    &::before {
+        content: "";
+        border: 1px solid black;
+        width: 50%;
+        height: 100%;
+    }
+}
+
+.spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
 }

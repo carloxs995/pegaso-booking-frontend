@@ -21,8 +21,7 @@ import { lastValueFrom, withLatestFrom } from 'rxjs';
         <ng-container>
     `,
 })
-export class AppComponent implements OnInit {
-    title = 'pegaso-booking';
+export class AppComponent {
     isLoading: boolean = true;
 
     private readonly _authenticationService: AuthenticationService = inject(AuthenticationService)
@@ -35,9 +34,5 @@ export class AppComponent implements OnInit {
             }
             this.isLoading = false;
         })
-    }
-
-
-    ngOnInit(): void {
     }
 }

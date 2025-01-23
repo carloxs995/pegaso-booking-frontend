@@ -1,23 +1,80 @@
-<h2 class="title" mat-dialog-title>Login</h2>
+<h2 class="title" mat-dialog-title>{{ isSignUp ? 'Registrazione' : 'Login' }}</h2>
 
-<mat-dialog-content class="dialog-content">
-    <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="user.email" type="email" placeholder="Inserisci la tua email">
-    </mat-form-field>
+<form [formGroup]="authForm" (ngSubmit)="isSignUp ? onRegister() : onLogin()">
+    <mat-dialog-content class="dialog-content">
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="Inserisci la tua email">
+            <mat-error
+                       *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched && authForm.get('password')?.dirty">
+                Email non valida
+            </mat-error>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input matInput [(ngModel)]="user.password" type="password" placeholder="Inserisci la tua password">
-    </mat-form-field>
-</mat-dialog-content>
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password" placeholder="Inserisci la tua password">
+            <mat-error
+                       *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched && authForm.get('password')?.dirty">
+                La password è obbligatoria
+            </mat-error>
+        </mat-form-field>
 
-<mat-dialog-actions align="center">
-    <ng-container *ngIf="!isLoading; else spinner">
-        <button mat-button (click)="onCancel()">Annulla</button>
-        <button mat-raised-button color="primary" (click)="onLogin()">Login</button>
+        <ng-container *ngIf="isSignUp">
+            <mat-form-field appearance="outline">
+                <mat-label>Conferma Password</mat-label>
+                <input matInput formControlName="confirmPassword" type="password"
+                       placeholder="Conferma la tua password">
+                <mat-error *ngIf="authForm.hasError('passwordMismatch') && authForm.get('confirmPassword')?.dirty">
+                    Le password non coincidono
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Nome</mat-label>
+                <input matInput formControlName="firstName" type="text" placeholder="Inserisci il tuo nome">
+                <mat-error
+                           *ngIf="authForm.get('firstName')?.invalid && authForm.get('firstName')?.touched && authForm.get('firstName')?.dirty">
+                    Nome obbligatorio
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Cognome</mat-label>
+                <input matInput formControlName="lastName" type="text" placeholder="Inserisci il tuo cognome">
+                <mat-error
+                           *ngIf="authForm.get('lastName')?.invalid && authForm.get('lastName')?.touched && authForm.get('lastName')?.dirty">
+                    Cognome obbligatorio
+                </mat-error>
+            </mat-form-field>
+        </ng-container>
+    </mat-dialog-content>
+
+    <ng-container *ngIf="!isLoading">
+        <mat-dialog-actions align="center" *ngIf="!isSignUp">
+            <button mat-button type="button" (click)="onCancel()">Annulla</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="authForm.invalid">Login</button>
+        </mat-dialog-actions>
+
+        <mat-dialog-actions align="center" *ngIf="isSignUp">
+            <button mat-button type="button" (click)="onCancel()">Annulla</button>
+            <button mat-raised-button color="accent" type="submit" [disabled]="authForm.invalid">Registrati</button>
+        </mat-dialog-actions>
     </ng-container>
-    <ng-template #spinner>
+</form>
+
+<ng-container *ngIf="!isLoading; else spinner">
+    <div class="divider">OR</div>
+
+    <mat-dialog-actions align="center">
+        <button mat-raised-button color="primary" (click)="toggleSignUp()">
+            {{ isSignUp ? 'Hai già un account? Login' : 'Registrati' }}
+        </button>
+    </mat-dialog-actions>
+</ng-container>
+
+<ng-template #spinner>
+    <div class="spinner">
         <mat-spinner [diameter]="40"></mat-spinner>
-    </ng-template>
-</mat-dialog-actions>
+    </div>
+</ng-template>
