@@ -17,9 +17,16 @@ import { lastValueFrom, withLatestFrom } from 'rxjs';
     template: `
         <ng-container *ngIf="!isLoading">
             <navbar />
-            <router-outlet />
+            <div class="content">
+                <router-outlet />
+            </div>
         <ng-container>
     `,
+    styles: `
+        .content {
+            margin-top: 64px; //NavBar height
+        }
+    `
 })
 export class AppComponent {
     isLoading: boolean = true;
