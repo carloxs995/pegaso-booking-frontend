@@ -27,7 +27,13 @@
         width: 100%;
     }
 
-    .delete-option .delete-text {
-        color: red;
+    mat-paginator {
+        mat-form-field {
+            width: 84px;
+        }
     }
+}
+
+.delete-text {
+    color: red;
 }

@@ -13,6 +13,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { BookingsService } from '../../../../services/bookings.service';
 import { IBookingDetails, IBookingsFiltersListSchema } from '../../../../models/booking.model';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmPaymentDialogComponent } from './admin-bookings-confirm-payment-dialog/admin-bookings-confirm-payment-dialog.component';
 
 @Component({
     selector: 'app-admin-bookings-management',
@@ -30,6 +33,8 @@ import { IBookingDetails, IBookingsFiltersListSchema } from '../../../../models/
         MatMenuModule,
         MatButtonModule,
         MatIconModule,
+        MatPaginatorModule,
+        MatDialogModule
     ],
     templateUrl: './admin-bookings-management.component.html',
     styleUrl: './admin-bookings-management.component.scss',
@@ -48,9 +53,11 @@ export class AdminBookingsManagementComponent {
     statuses = ['Pending', 'Confirmed', 'Cancelled', 'Completed'];
 
 
+    private readonly _dialog: MatDialog = inject(MatDialog);
     private readonly _bookingsService: BookingsService = inject(BookingsService);
 
     @ViewChild(MatSort) sort: MatSort = new MatSort();
+    @ViewChild(MatPaginator) paginator: MatPaginator = new MatPaginator();
 
     ngOnInit() {
         this._initDataSource();
@@ -60,6 +67,7 @@ export class AdminBookingsManagementComponent {
         this._bookingsService.getBookingsList(this.filters).subscribe(res => {
             this.dataSource = new MatTableDataSource(res.data.items)
             this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
         })
     }
 
@@ -90,8 +98,16 @@ export class AdminBookingsManagementComponent {
         console.log('Modifica:', element);
     }
 
-    onConfirmPayment(element: any) {
-        console.log('Conferma pagamento per:', element);
+    onConfirmPayment(booking: IBookingDetails) {
+        this._dialog.open(ConfirmPaymentDialogComponent, {
+            width: '400px',
+            data: { booking }
+        }).afterClosed()
+            .subscribe(result => {
+                if (result === 'confirm') {
+                    this._initDataSource();
+                }
+            });
     }
 
     onDelete(element: any) {

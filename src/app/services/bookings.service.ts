@@ -13,4 +13,8 @@ export class BookingsService {
     getBookingsList(filters: IBookingsFiltersListSchema): Observable<IBookingListResponse> {
         return this._firebaseBackendService.get('/bookings', filters);
     }
+
+    confirmPayment(id: string): Observable<void> {
+        return this._firebaseBackendService.put(`/bookings/${id}/confirm`);
+    }
 }
