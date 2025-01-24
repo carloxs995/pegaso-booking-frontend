@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { NavigationMenuComponent } from './navigation-menu/navigation-menu.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'navbar',
@@ -17,4 +18,9 @@ export class NavbarComponent {
 
     private readonly _dialog: MatDialog = inject(MatDialog);
     authenticationService: AuthenticationService = inject(AuthenticationService);
+    private readonly router: Router = inject(Router);
+
+    navigateToHome(): void {
+        this.router.navigate(['/']);
+    }
 }
