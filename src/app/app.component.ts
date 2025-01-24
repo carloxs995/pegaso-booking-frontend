@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/core/navbar/navbar.component';
 import { AuthenticationService } from './services/authentication.service';
@@ -23,10 +23,28 @@ import { lastValueFrom, withLatestFrom } from 'rxjs';
         <ng-container>
     `,
     styles: `
-        .content {
-            margin-top: 64px; //NavBar height
+            html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
         }
-    `
+
+        app-root {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            display: flex;
+            flex-flow: column;
+            height: 100%;
+            flex-grow: 1;
+            padding-top: 64px; //NavBar height
+        }
+    `,
+    encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
     isLoading: boolean = true;

@@ -1,5 +1,19 @@
-<mat-tab-group>
-    <mat-tab label="Gestione Prenotazioni"> Gestione Prenotazioni </mat-tab>
-    <mat-tab label="Gestione Servizi "> Gestione Servizi </mat-tab>
-    <mat-tab label="Gestione Utenti"> Gestione Utenti </mat-tab>
+<mat-tab-group class="tab-container">
+    <mat-tab label="Gestione Prenotazioni">
+      <div class="tab-content">
+        <app-admin-bookings-management></app-admin-bookings-management>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Gestione Servizi">
+      <div class="tab-content">
+        <app-admin-services-management></app-admin-services-management>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Gestione Utenti">
+      <div class="tab-content">
+        <app-admin-users-management></app-admin-users-management>
+      </div>
+    </mat-tab>
   </mat-tab-group>

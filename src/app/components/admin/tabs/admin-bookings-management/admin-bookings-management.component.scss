@@ -1,0 +1,33 @@
+.admin-bookings-management {
+    display: flex;
+    flex-flow: column;
+    flex-grow: 1;
+    height: 100%;
+
+    .search-bar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .filter-panel {
+        margin-bottom: 20px;
+    }
+
+    .filter-options {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    mat-table {
+        width: 100%;
+    }
+
+    mat-form-field {
+        width: 100%;
+    }
+
+    .delete-option .delete-text {
+        color: red;
+    }
+}

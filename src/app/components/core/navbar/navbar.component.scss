@@ -22,7 +22,6 @@
     }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .navbar {
         flex-direction: row;
@@ -36,7 +35,7 @@
         flex-direction: row;
 
         span {
-            display: none; // Nasconde il nome utente su schermi piccoli
+            display: none;
         }
     }
 }
