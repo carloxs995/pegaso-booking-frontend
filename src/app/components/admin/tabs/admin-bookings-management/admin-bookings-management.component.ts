@@ -15,7 +15,9 @@ import { BookingsService } from '../../../../services/bookings.service';
 import { IBookingDetails, IBookingsFiltersListSchema } from '../../../../models/booking.model';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ConfirmPaymentDialogComponent } from './admin-bookings-confirm-payment-dialog/admin-bookings-confirm-payment-dialog.component';
+import { AdminBookingsConfirmPaymentDialogComponent } from './admin-bookings-confirm-payment-dialog/admin-bookings-confirm-payment-dialog.component';
+import { Router } from '@angular/router';
+import { AdminBookingsDeleteDialog } from './admin-bookings-delete-dialog/admin-bookings-delete-dialog.component';
 
 @Component({
     selector: 'app-admin-bookings-management',
@@ -52,7 +54,7 @@ export class AdminBookingsManagementComponent {
     serviceTypes = ['Standard', 'Deluxe', 'Suite', 'Luxury', 'Penthouse'];
     statuses = ['Pending', 'Confirmed', 'Cancelled', 'Completed'];
 
-
+    private readonly _router: Router = inject(Router);
     private readonly _dialog: MatDialog = inject(MatDialog);
     private readonly _bookingsService: BookingsService = inject(BookingsService);
 
@@ -94,12 +96,12 @@ export class AdminBookingsManagementComponent {
         this.dataSource.filter = '';
     }
 
-    onEdit(element: any) {
-        console.log('Modifica:', element);
+    onEdit(booking: IBookingDetails) {
+        this._router.navigate([`/bookings/${booking.id}`]);
     }
 
     onConfirmPayment(booking: IBookingDetails) {
-        this._dialog.open(ConfirmPaymentDialogComponent, {
+        this._dialog.open(AdminBookingsConfirmPaymentDialogComponent, {
             width: '400px',
             data: { booking }
         }).afterClosed()
@@ -110,7 +112,15 @@ export class AdminBookingsManagementComponent {
             });
     }
 
-    onDelete(element: any) {
-        console.log('Eliminazione:', element);
+    onDelete(booking: IBookingDetails) {
+        this._dialog.open(AdminBookingsDeleteDialog, {
+            width: '400px',
+            data: { booking }
+        }).afterClosed()
+            .subscribe(result => {
+                if (result === 'confirm') {
+                    this._initDataSource();
+                }
+            });
     }
 }

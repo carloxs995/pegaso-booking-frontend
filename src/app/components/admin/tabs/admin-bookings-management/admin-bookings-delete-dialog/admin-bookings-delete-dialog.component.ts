@@ -11,16 +11,16 @@ import { BookingsService } from '../../../../../services/bookings.service';
         MatButtonModule
     ],
     template: `
-    <h2 mat-dialog-title>Conferma Pagamento</h2>
+    <h2 mat-dialog-title>Elimina Prenotazione</h2>
     <mat-dialog-content>
       <p>
-        Sei sicuro di voler <b style="color: green;">CONFERMARE</b> il pagamento per
+        Sei sicuro di voler <b style="color:red">ELIMINARE</b> la prenotazione di
         <b>{{ data.booking.customerFirstName }} {{ data.booking.customerLastName }}</b>?
       </p>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button (click)="onCancel()">Annulla</button>
-      <button mat-raised-button color="primary" (click)="onConfirm()">Conferma</button>
+      <button mat-raised-button color="primary" (click)="onConfirm()">Elimina</button>
     </mat-dialog-actions>
   `,
     styles: [
@@ -42,15 +42,15 @@ import { BookingsService } from '../../../../../services/bookings.service';
     `
     ]
 })
-export class AdminBookingsConfirmPaymentDialogComponent {
+export class AdminBookingsDeleteDialog {
     constructor(
         private readonly _bookingService: BookingsService,
-        public dialogRef: MatDialogRef<AdminBookingsConfirmPaymentDialogComponent>,
+        public dialogRef: MatDialogRef<AdminBookingsDeleteDialog>,
         @Inject(MAT_DIALOG_DATA) public data: { booking: IBookingDetails }
     ) { }
 
     onConfirm(): void {
-        this._bookingService.confirmPayment(this.data.booking.id)
+        this._bookingService.deleteBooking(this.data.booking.id)
             .subscribe(() => {
                 this.dialogRef.close('confirm');
             })

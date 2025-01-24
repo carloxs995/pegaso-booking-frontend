@@ -17,4 +17,8 @@ export class BookingsService {
     confirmPayment(id: string): Observable<void> {
         return this._firebaseBackendService.put(`/bookings/${id}/confirm`);
     }
+
+    deleteBooking(id: string): Observable<void> {
+        return this._firebaseBackendService.delete(`/bookings/${id}`);
+    }
 }
