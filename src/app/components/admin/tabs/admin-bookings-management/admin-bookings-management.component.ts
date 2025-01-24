@@ -18,6 +18,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AdminBookingsConfirmPaymentDialogComponent } from './admin-bookings-confirm-payment-dialog/admin-bookings-confirm-payment-dialog.component';
 import { Router } from '@angular/router';
 import { AdminBookingsDeleteDialog } from './admin-bookings-delete-dialog/admin-bookings-delete-dialog.component';
+import { ROOM_TYPE_AVAILABLE } from '../../../../models/room.models';
 
 @Component({
     selector: 'app-admin-bookings-management',
@@ -51,8 +52,8 @@ export class AdminBookingsManagementComponent {
     filters: IBookingsFiltersListSchema = {
     };
 
-    serviceTypes = ['Standard', 'Deluxe', 'Suite', 'Luxury', 'Penthouse'];
-    statuses = ['Pending', 'Confirmed', 'Cancelled', 'Completed'];
+    serviceTypes = ROOM_TYPE_AVAILABLE;
+    statuses = ['Pending', 'Confirmed', 'Cancelled', 'Completed']; //TODO: refactor with enum
 
     private readonly _router: Router = inject(Router);
     private readonly _dialog: MatDialog = inject(MatDialog);

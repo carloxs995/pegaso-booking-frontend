@@ -25,7 +25,7 @@ export class FirebaseBackendService {
             }).pipe(catchError(this.handleError));
     }
 
-    post<T>(endpoint: string, body: any): Observable<T> {
+    post<T>(endpoint: string, body?: any): Observable<T> {
         return this.httpClient.post<T>(
             `${this.baseURL}${endpoint}`,
             body,

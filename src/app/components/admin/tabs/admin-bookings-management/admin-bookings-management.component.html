@@ -1,11 +1,5 @@
 <div class="table-container">
     <div class="filters-bar">
-        <!-- <mat-form-field appearance="outline" class="search-bar">
-            <mat-label>Cerca</mat-label>
-            <input matInput (input)="applyFilter($event)" placeholder="Inserisci nome cliente...">
-            <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field> -->
-
         <mat-expansion-panel class="filter-panel">
             <mat-expansion-panel-header>
                 <mat-panel-title> Filtri Avanzati </mat-panel-title>
@@ -18,13 +12,6 @@
                         <mat-option *ngFor="let type of serviceTypes" [value]="type">{{ type }}</mat-option>
                     </mat-select>
                 </mat-form-field>
-
-                <!-- <mat-form-field appearance="outline">
-                    <mat-label>Status</mat-label>
-                    <mat-select [(ngModel)]="filters">
-                        <mat-option *ngFor="let status of statuses" [value]="status">{{ status }}</mat-option>
-                    </mat-select>
-                </mat-form-field> -->
 
                 <mat-slide-toggle [(ngModel)]="filters.isPaid">Pagato</mat-slide-toggle>
             </div>

@@ -27,7 +27,7 @@ export interface IBookingDetails {
 export interface IBookingsFiltersListSchema {
     checkInDate?: string | undefined;
     checkOutDate?: string | undefined;
-    serviceName?: "Standard" | "Deluxe" | "Suite" | "Luxury" | "Penthouse" | undefined;
+    serviceName?: RoomType;
     pagination?: {
         continuation: string | null;
         pageSize: number;

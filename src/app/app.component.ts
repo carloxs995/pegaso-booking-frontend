@@ -15,12 +15,12 @@ import { lastValueFrom, withLatestFrom } from 'rxjs';
         CommonModule
     ],
     template: `
-        <ng-container *ngIf="!isLoading">
+        @if(!isLoading) {
             <navbar />
             <div class="content">
                 <router-outlet />
             </div>
-        <ng-container>
+        }
     `,
     styles: `
             html, body {
