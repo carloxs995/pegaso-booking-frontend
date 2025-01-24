@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,29 +11,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-
-const ELEMENT_DATA = [
-    { id: '001', serviceType: 'Luxury', customerName: 'John Doe', isPaid: true, status: 'Confirmed' },
-    { id: '002', serviceType: 'Deluxe', customerName: 'Jane Smith', isPaid: false, status: 'Pending' },
-    { id: '003', serviceType: 'Standard', customerName: 'Alice Brown', isPaid: true, status: 'Completed' },
-    { id: '004', serviceType: 'Suite', customerName: 'Charlie Black', isPaid: false, status: 'Cancelled' },
-    { id: '001', serviceType: 'Luxury', customerName: 'John Doe', isPaid: true, status: 'Confirmed' },
-    { id: '002', serviceType: 'Deluxe', customerName: 'Jane Smith', isPaid: false, status: 'Pending' },
-    { id: '003', serviceType: 'Standard', customerName: 'Alice Brown', isPaid: true, status: 'Completed' },
-    { id: '004', serviceType: 'Suite', customerName: 'Charlie Black', isPaid: false, status: 'Cancelled' },
-    { id: '001', serviceType: 'Luxury', customerName: 'John Doe', isPaid: true, status: 'Confirmed' },
-    { id: '002', serviceType: 'Deluxe', customerName: 'Jane Smith', isPaid: false, status: 'Pending' },
-    { id: '003', serviceType: 'Standard', customerName: 'Alice Brown', isPaid: true, status: 'Completed' },
-    { id: '004', serviceType: 'Suite', customerName: 'Charlie Black', isPaid: false, status: 'Cancelled' },
-    { id: '001', serviceType: 'Luxury', customerName: 'John Doe', isPaid: true, status: 'Confirmed' },
-    { id: '002', serviceType: 'Deluxe', customerName: 'Jane Smith', isPaid: false, status: 'Pending' },
-    { id: '003', serviceType: 'Standard', customerName: 'Alice Brown', isPaid: true, status: 'Completed' },
-    { id: '004', serviceType: 'Suite', customerName: 'Charlie Black', isPaid: false, status: 'Cancelled' },
-    { id: '001', serviceType: 'Luxury', customerName: 'John Doe', isPaid: true, status: 'Confirmed' },
-    { id: '002', serviceType: 'Deluxe', customerName: 'Jane Smith', isPaid: false, status: 'Pending' },
-    { id: '003', serviceType: 'Standard', customerName: 'Alice Brown', isPaid: true, status: 'Completed' },
-    { id: '004', serviceType: 'Suite', customerName: 'Charlie Black', isPaid: false, status: 'Cancelled' },
-];
+import { BookingsService } from '../../../../services/bookings.service';
+import { IBookingDetails, IBookingsFiltersListSchema } from '../../../../models/booking.model';
 
 @Component({
     selector: 'app-admin-bookings-management',
@@ -59,43 +38,51 @@ const ELEMENT_DATA = [
 export class AdminBookingsManagementComponent {
     @HostBinding('className') className = 'admin-bookings-management';
 
-    displayedColumns: string[] = ['id', 'serviceType', 'customerName', 'isPaid', 'status', 'actions'];
-    dataSource = new MatTableDataSource(ELEMENT_DATA);
+    displayedColumns: string[] = ['id', 'serviceName', 'customerName', 'isPaid', 'status', 'actions'];
+    dataSource: MatTableDataSource<IBookingDetails> = new MatTableDataSource();
 
-    filter = {
-        serviceType: '',
-        status: '',
-        isPaid: false
+    filters: IBookingsFiltersListSchema = {
     };
 
     serviceTypes = ['Standard', 'Deluxe', 'Suite', 'Luxury', 'Penthouse'];
     statuses = ['Pending', 'Confirmed', 'Cancelled', 'Completed'];
 
+
+    private readonly _bookingsService: BookingsService = inject(BookingsService);
+
     @ViewChild(MatSort) sort: MatSort = new MatSort();
 
     ngOnInit() {
-        this.dataSource.sort = this.sort;
+        this._initDataSource();
+    }
+
+    private _initDataSource(): void {
+        this._bookingsService.getBookingsList(this.filters).subscribe(res => {
+            this.dataSource = new MatTableDataSource(res.data.items)
+            this.dataSource.sort = this.sort;
+        })
     }
 
     applyFilter(event: Event) {
-        const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+        const filterValue = (event.target as HTMLInputElement).value.trim();
+        console.log(filterValue);
         this.dataSource.filter = filterValue;
     }
 
     applyAdvancedFilter() {
         this.dataSource.filterPredicate = (data: any, filter: string) => { //TODO: typize it correctly
             const parsedFilter = JSON.parse(filter);
+            console.log(data, parsedFilter);
             return (
-                (parsedFilter.serviceType ? data.serviceType === parsedFilter.serviceType : true) &&
-                (parsedFilter.status ? data.status === parsedFilter.status : true) &&
-                (parsedFilter.isPaid !== null ? data.isPaid === parsedFilter.isPaid : true)
+                (parsedFilter.serviceName ? data.serviceName === parsedFilter.serviceName : true) &&
+                (parsedFilter.isPaid !== false ? data.isPaid === parsedFilter.isPaid : true)
             );
         };
-        this.dataSource.filter = JSON.stringify(this.filter);
+        this.dataSource.filter = JSON.stringify(this.filters);
     }
 
     clearFilters() {
-        this.filter = { serviceType: '', status: '', isPaid: false };
+        this.filters = { serviceName: undefined, isPaid: false };
         this.dataSource.filter = '';
     }
 
