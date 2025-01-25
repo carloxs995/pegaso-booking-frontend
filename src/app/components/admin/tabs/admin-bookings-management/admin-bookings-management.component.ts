@@ -19,6 +19,7 @@ import { AdminBookingsConfirmPaymentDialogComponent } from './admin-bookings-con
 import { Router } from '@angular/router';
 import { AdminBookingsDeleteDialog } from './admin-bookings-delete-dialog/admin-bookings-delete-dialog.component';
 import { ROOM_TYPE_AVAILABLE } from '../../../../models/room.models';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
     selector: 'app-admin-bookings-management',
@@ -37,7 +38,8 @@ import { ROOM_TYPE_AVAILABLE } from '../../../../models/room.models';
         MatButtonModule,
         MatIconModule,
         MatPaginatorModule,
-        MatDialogModule
+        MatDialogModule,
+        MatToolbarModule
     ],
     templateUrl: './admin-bookings-management.component.html',
     styleUrl: './admin-bookings-management.component.scss',

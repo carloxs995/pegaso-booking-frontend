@@ -5,11 +5,13 @@ export enum UserRole {
 }
 
 export interface UserDetails {
-    uid: string,
+    id: string,
     email: string,
     firstName: string,
     lastName: string,
-    role: UserRole
+    role: UserRole,
+    disabled: boolean;
+    emailVerified: boolean;
 }
 
 export interface UserRegistration {
