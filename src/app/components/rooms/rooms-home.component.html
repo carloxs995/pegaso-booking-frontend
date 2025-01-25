@@ -4,7 +4,7 @@
     </div>
 
     <div class="cards-container">
-        @for(item of (rooms$ | async); track item.id) {
+        @for(item of roomsList; track item.id) {
             <app-room-card [item]="item" />
         }
     </div>

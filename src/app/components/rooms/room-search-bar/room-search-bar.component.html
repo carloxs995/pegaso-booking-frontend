@@ -1,48 +1,56 @@
 <form [formGroup]="searchForm">
     <mat-form-field appearance="outline">
-      <mat-label>Tipo di Servizio</mat-label>
-      <mat-select formControlName="type">
-        <mat-option *ngFor="let type of ROOM_TYPE_AVAILABLE" [value]="type">
-          {{ type }}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="searchForm.get('type')?.hasError('required') && searchForm.get('type')?.touched">
-        Il tipo di servizio è obbligatorio
-      </mat-error>
+        <mat-label>Tipo di Servizio</mat-label>
+        <mat-select formControlName="serviceType">
+            <mat-option [value]="''">
+                Tutte le stanze
+            </mat-option>
+            <mat-option *ngFor="let type of ROOM_TYPE_AVAILABLE" [value]="type">
+                {{ type }}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="searchForm.get('type')?.hasError('required') && searchForm.get('type')?.touched">
+            Il tipo di servizio è obbligatorio
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Check-in</mat-label>
-      <input matInput [matDatepicker]="checkInPicker" [min]="TODAY" placeholder="Aggiungi data" formControlName="checkInDate">
-      <mat-datepicker-toggle matIconSuffix [for]="checkInPicker"></mat-datepicker-toggle>
-      <mat-datepicker #checkInPicker></mat-datepicker>
-      <mat-error *ngIf="searchForm.get('checkInDate')?.hasError('required') && searchForm.get('checkInDate')?.touched">
-        La data di check-in è obbligatoria
-      </mat-error>
+        <mat-label>Check-in</mat-label>
+        <input matInput [matDatepicker]="checkInPicker" [min]="TODAY" placeholder="Aggiungi data"
+               formControlName="checkInDate">
+        <mat-datepicker-toggle matIconSuffix [for]="checkInPicker"></mat-datepicker-toggle>
+        <mat-datepicker #checkInPicker></mat-datepicker>
+        <mat-error
+                   *ngIf="searchForm.get('checkInDate')?.hasError('required') && searchForm.get('checkInDate')?.touched">
+            La data di check-in è obbligatoria
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Check-out</mat-label>
-      <input matInput [matDatepicker]="checkOutPicker" [min]="searchForm.controls.checkInDate.value" placeholder="Aggiungi data" formControlName="checkOutDate">
-      <mat-datepicker-toggle matIconSuffix [for]="checkOutPicker"></mat-datepicker-toggle>
-      <mat-datepicker #checkOutPicker></mat-datepicker>
-      <mat-error *ngIf="searchForm.get('checkOutDate')?.hasError('required') && searchForm.get('checkOutDate')?.touched">
-        La data di check-out è obbligatoria
-      </mat-error>
+        <mat-label>Check-out</mat-label>
+        <input matInput [matDatepicker]="checkOutPicker" [min]="searchForm.controls.checkInDate.value"
+               placeholder="Aggiungi data" formControlName="checkOutDate">
+        <mat-datepicker-toggle matIconSuffix [for]="checkOutPicker"></mat-datepicker-toggle>
+        <mat-datepicker #checkOutPicker></mat-datepicker>
+        <mat-error
+                   *ngIf="searchForm.get('checkOutDate')?.hasError('required') && searchForm.get('checkOutDate')?.touched">
+            La data di check-out è obbligatoria
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Ospiti</mat-label>
-      <input matInput type="number" placeholder="Aggiungi ospiti" formControlName="guests">
-      <mat-error *ngIf="searchForm.get('guests')?.hasError('required') && searchForm.get('guests')?.touched">
-        Il numero di ospiti è obbligatorio
-      </mat-error>
-      <mat-error *ngIf="searchForm.get('guests')?.hasError('min') && searchForm.get('guests')?.touched">
-        Il numero di ospiti deve essere almeno 1
-      </mat-error>
+        <mat-label>Ospiti</mat-label>
+        <input matInput type="number" placeholder="Aggiungi ospiti" formControlName="guests">
+        <mat-error *ngIf="searchForm.get('guests')?.hasError('required') && searchForm.get('guests')?.touched">
+            Il numero di ospiti è obbligatorio
+        </mat-error>
+        <mat-error *ngIf="searchForm.get('guests')?.hasError('min') && searchForm.get('guests')?.touched">
+            Il numero di ospiti deve essere almeno 1
+        </mat-error>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" [disabled]="searchForm.invalid" (click)="onSearch.emit(searchForm.getRawValue())">
-      Cerca
+    <button mat-raised-button color="primary" [disabled]="searchForm.invalid"
+            (click)="triggerSearch()">
+        Cerca
     </button>
-  </form>
+</form>

@@ -1,5 +1,5 @@
 import { CommonModule, NgFor } from '@angular/common';
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -11,9 +11,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RoomCardComponent } from './room-card/room-card.component';
 import { RoomsService } from '../../services/rooms.service';
-import { map } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { RoomSearchBarComponent } from "./room-search-bar/room-search-bar.component";
-import { RoomFilter } from '../../models/room.models';
+import { IRoomDetails, RoomFilters } from '../../models/room.models';
 
 @Component({
     imports: [
@@ -34,10 +34,24 @@ import { RoomFilter } from '../../models/room.models';
     styleUrl: './rooms-home.component.scss',
     encapsulation: ViewEncapsulation.None
 })
-export class RoomsHomeComponent {
-    rooms$ = inject(RoomsService).getRoomsList().pipe(map(res => res.data));
+export class RoomsHomeComponent implements OnInit {
+    roomsList: IRoomDetails[] = [];
+    filters: RoomFilters | undefined;
 
-    onSearch(event: Event) {
-        console.log(event);
+    private readonly _roomsService: RoomsService = inject(RoomsService);
+
+    ngOnInit(): void {
+        this.initDataSource();
+    }
+
+    initDataSource() {
+        this._roomsService.getRoomsList(this.filters)
+            .pipe(map(res => res.data))
+            .subscribe(items => this.roomsList = items);
+    }
+
+    onSearch(filters: RoomFilters) {
+        this.filters = filters;
+        this.initDataSource();
     }
 }

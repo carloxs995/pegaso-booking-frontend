@@ -15,8 +15,8 @@ export interface IRoomDetails {
     images: string[];
 }
 
-export interface RoomFilter {
-    type: RoomType;
+export interface RoomFilters {
+    serviceType: RoomType;
     guests: number;
     checkInDate: string;
     checkOutDate: string;

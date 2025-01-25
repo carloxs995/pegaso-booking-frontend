@@ -2,7 +2,7 @@
     <mat-card-header>
         <mat-card-title>{{ item.name }}</mat-card-title>
     </mat-card-header>
-    <img mat-card-image [src]="item?.images?.length ? item.images[0] : '/'" alt="{{ item.name }}">
+    <img mat-card-image [src]="'/'" alt="{{ item.name }}"> <!--TODO: Add IMAGE-->
     <mat-card-content>
         <p>{{ item.description }}</p>
         <p><strong>&euro;{{item.pricePerNight}}</strong> / notte</p>

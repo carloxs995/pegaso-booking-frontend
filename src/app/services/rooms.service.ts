@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { FirebaseBackendService } from './firebase-backend.service';
 import { Observable } from 'rxjs';
-import { IRoomDetails } from '../models/room.models';
+import { IRoomDetails, RoomFilters } from '../models/room.models';
 
 @Injectable({
     providedIn: 'root'
@@ -10,8 +10,8 @@ export class RoomsService {
 
     private readonly _firebaseBackendService: FirebaseBackendService = inject(FirebaseBackendService);
 
-    getRoomsList(): Observable<{ data: IRoomDetails[] }> {
-        return this._firebaseBackendService.get('/rooms');
+    getRoomsList(filters?: RoomFilters): Observable<{ data: IRoomDetails[] }> {
+        return this._firebaseBackendService.get('/rooms', filters);
     }
 
     createRoom(roomModel: IRoomDetails): Observable<void> {
