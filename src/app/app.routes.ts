@@ -3,8 +3,13 @@ import { AdminAreaHomeComponent } from './components/admin/admin-area-home/admin
 import { AuthenticationService } from './services/authentication.service';
 import { inject } from '@angular/core';
 import { UserRole } from './models/user.model';
+import { RoomsHomeComponent } from './components/rooms/rooms-home.component';
 
 export const routes: Routes = [
+    {
+        path: '',
+        component: RoomsHomeComponent,
+    },
     {
         path: 'admin',
         canActivateChild: [

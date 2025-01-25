@@ -1,0 +1,13 @@
+<mat-card class="item-card">
+    <mat-card-header>
+        <mat-card-title>{{ item.name }}</mat-card-title>
+    </mat-card-header>
+    <img mat-card-image [src]="item?.images?.length ? item.images[0] : '/'" alt="{{ item.name }}">
+    <mat-card-content>
+        <p>{{ item.description }}</p>
+        <p><strong>&euro;{{item.pricePerNight}}</strong> / notte</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button color="accent">Dettagli</button>
+    </mat-card-actions>
+</mat-card>

@@ -5,6 +5,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { CommonModule } from '@angular/common';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { lastValueFrom, withLatestFrom } from 'rxjs';
+import { FooterComponent } from './components/core/footer/footer.component';
 
 @Component({
     selector: 'app-root',
@@ -12,7 +13,8 @@ import { lastValueFrom, withLatestFrom } from 'rxjs';
     imports: [
         NavbarComponent,
         RouterOutlet,
-        CommonModule
+        CommonModule,
+        FooterComponent
     ],
     template: `
         @if(!isLoading) {
@@ -20,6 +22,7 @@ import { lastValueFrom, withLatestFrom } from 'rxjs';
             <div class="content">
                 <router-outlet />
             </div>
+            <!-- <app-footer /> -->
         }
     `,
     styles: `

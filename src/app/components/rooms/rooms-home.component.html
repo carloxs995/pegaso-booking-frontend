@@ -1,0 +1,12 @@
+<div class="homepage-container">
+    <div class="search-bar">
+        <room-search-bar (onSearch)="onSearch($event)"/>
+    </div>
+
+    <div class="cards-container">
+        @for(item of (rooms$ | async); track item.id) {
+            <app-room-card [item]="item" />
+        }
+    </div>
+
+</div>

@@ -1,6 +1,6 @@
 <h2 class="title" mat-dialog-title>{{ isSignUp ? 'Registrazione' : 'Login' }}</h2>
 
-<form [formGroup]="authForm" (ngSubmit)="isSignUp ? onRegister() : onLogin()">
+<form [formGroup]="authForm" (ngSubmit)="isSignUp ? onRegister() : onLogin()" [@formTransition]="isSignUp ? 'signup' : 'login'">
     <mat-dialog-content class="dialog-content">
         <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>

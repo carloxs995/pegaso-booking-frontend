@@ -12,5 +12,12 @@ export interface IRoomDetails {
     amenities: string[];
     available: boolean;
     description?: string | undefined;
-    images?: Blob[] | undefined;
+    images: string[];
+}
+
+export interface RoomFilter {
+    type: RoomType;
+    guests: number;
+    checkInDate: string;
+    checkOutDate: string;
 }
