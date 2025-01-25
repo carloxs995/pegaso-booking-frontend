@@ -20,6 +20,8 @@ import { Router } from '@angular/router';
 import { AdminBookingsDeleteDialog } from './admin-bookings-delete-dialog/admin-bookings-delete-dialog.component';
 import { ROOM_TYPE_AVAILABLE } from '../../../../models/room.models';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { map } from 'rxjs';
+import { formatDate } from '../../../../helpers/date.helpers';
 
 @Component({
     selector: 'app-admin-bookings-management',
@@ -48,7 +50,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 export class AdminBookingsManagementComponent {
     @HostBinding('className') className = 'admin-bookings-management';
 
-    displayedColumns: string[] = ['id', 'serviceName', 'customerName', 'isPaid', 'status', 'actions'];
+    displayedColumns: string[] = ['id', 'serviceName', 'customerName', 'checkInDate', 'checkOutDate', 'isPaid', 'status', 'actions'];
     dataSource: MatTableDataSource<IBookingDetails> = new MatTableDataSource();
 
     filters: IBookingsFiltersListSchema = {
@@ -61,6 +63,8 @@ export class AdminBookingsManagementComponent {
     private readonly _dialog: MatDialog = inject(MatDialog);
     private readonly _bookingsService: BookingsService = inject(BookingsService);
 
+    formatDate = (date: string): string => formatDate(date);
+
     @ViewChild(MatSort) sort: MatSort = new MatSort();
     @ViewChild(MatPaginator) paginator: MatPaginator = new MatPaginator();
 
@@ -69,11 +73,12 @@ export class AdminBookingsManagementComponent {
     }
 
     private _initDataSource(): void {
-        this._bookingsService.getBookingsList(this.filters).subscribe(res => {
-            this.dataSource = new MatTableDataSource(res.data.items)
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-        })
+        this._bookingsService.getBookingsList(this.filters)
+            .subscribe(res => {
+                this.dataSource = new MatTableDataSource(res.data.items)
+                this.dataSource.sort = this.sort;
+                this.dataSource.paginator = this.paginator;
+            })
     }
 
     applyFilter(event: Event) {

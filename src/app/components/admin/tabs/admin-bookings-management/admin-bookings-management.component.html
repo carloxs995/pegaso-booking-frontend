@@ -37,6 +37,16 @@
             <td mat-cell *matCellDef="let element">{{ element.serviceName }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="checkInDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>CheckIn Date</th>
+            <td mat-cell *matCellDef="let element">{{ formatDate(element.checkInDate) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="checkOutDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>CheckOut Date</th>
+            <td mat-cell *matCellDef="let element">{{ formatDate(element.checkOutDate) }}</td>
+        </ng-container>
+
         <ng-container matColumnDef="customerName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Name</th>
             <td mat-cell *matCellDef="let element">{{ element.customerFirstName + ' ' + element.customerLastName }}</td>
