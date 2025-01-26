@@ -5,14 +5,15 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { environment } from 'environment';
-import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig: FirebaseOptions = {
     apiKey: environment.firebaseConfig.apiKey,
     projectId: environment.firebaseConfig.projectId,
-    appId: environment.firebaseConfig.appId
+    appId: environment.firebaseConfig.appId,
+    storageBucket: 'pegaso-booking.firebasestorage.app'
 };
 
 initializeApp(firebaseConfig);

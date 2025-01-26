@@ -7,7 +7,7 @@
             </button>
         </div>
 
-        <form [formGroup]="serviceForm" (ngSubmit)="onSubmitForm()">
+        <form [formGroup]="serviceForm">
             <mat-form-field appearance="outline">
                 <mat-label>Tipo di Servizio</mat-label>
                 <mat-select formControlName="type" required [disabled]="isEditMode">
@@ -54,9 +54,13 @@
                 </mat-chip-grid>
             </mat-form-field>
 
+            <div class="image-upload-container">
+                <app-image-uploader [imagesUrls]="serviceForm.get('images')?.value" />
+            </div>
+
             <div class="action-buttons">
                 <button mat-button (click)="sideNavPanel.close()">Annulla</button>
-                <button mat-raised-button color="primary" type="submit">Salva</button>
+                <button mat-raised-button color="primary" type="submit" (click)="onSubmitForm()">Salva</button>
             </div>
         </form>
     </mat-sidenav>
@@ -64,7 +68,7 @@
     <mat-sidenav-content>
         <mat-toolbar color="primary">
             <span>Gestione Servizi</span>
-            <button mat-raised-button color="accent" (click)="openPanel()">
+            <button mat-raised-button color="accent" (click)="onCreateService()">
                 <mat-icon>add</mat-icon> Crea Servizio
             </button>
         </mat-toolbar>

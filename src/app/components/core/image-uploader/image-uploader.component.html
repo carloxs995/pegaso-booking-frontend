@@ -1,0 +1,23 @@
+<div class="upload-container">
+    <label for="fileInput" class="file-upload-label">
+        <mat-icon>cloud_upload</mat-icon>
+        <span>Carica Immagini (max {{maxNumber}})</span>
+    </label>
+    <input type="file" id="fileInput" multiple accept="image/*" (change)="onFileSelected($event)">
+</div>
+
+<div class="image-preview-container">
+    <div *ngFor="let image of imagesUrls; let i = index" class="image-preview">
+        <img [src]="image" alt="Immagine caricata">
+        <button mat-icon-button (click)="removeImage(i)">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div *ngFor="let image of previewImages; let i = index" class="image-preview">
+        <img [src]="image.preview" alt="Anteprima immagine">
+        <button mat-icon-button (click)="removeImage(i + imagesUrls.length)">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>

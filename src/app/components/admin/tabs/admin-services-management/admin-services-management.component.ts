@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, inject, ViewChild } from '@angular/core';
+import { Component, ComponentRef, HostBinding, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
@@ -19,6 +19,10 @@ import { RoomsService } from '../../../../services/rooms.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatChipsModule, MatChipInputEvent } from '@angular/material/chips';
+import { getStorage } from 'firebase/storage';
+import { ImageService } from '../../../../services/image.service';
+import { ImageUploaderComponent } from "../../../core/image-uploader/image-uploader.component";
+import { concatMap, from } from 'rxjs';
 
 @Component({
     selector: 'app-admin-services-management',
@@ -41,7 +45,8 @@ import { MatChipsModule, MatChipInputEvent } from '@angular/material/chips';
         MatToolbarModule,
         MatSidenavModule,
         ReactiveFormsModule,
-        MatChipsModule
+        MatChipsModule,
+        ImageUploaderComponent
     ],
     templateUrl: './admin-services-management.component.html',
     styleUrl: './admin-services-management.component.scss'
@@ -65,6 +70,7 @@ export class AdminServicesManagementComponent {
     @ViewChild(MatSort) sort: MatSort = new MatSort();
     @ViewChild(MatPaginator) paginator: MatPaginator = new MatPaginator();
     @ViewChild('sideNavPanel') sideNavPanel!: MatSidenav;
+    @ViewChild(ImageUploaderComponent, { read: ImageUploaderComponent }) imageUploader!: ImageUploaderComponent;
 
     serviceForm: FormGroup = this._formBuilder.group({
         id: [''],
@@ -75,6 +81,7 @@ export class AdminServicesManagementComponent {
         pricePerNight: ['', [Validators.required, Validators.min(1)]],
         totalRooms: ['', [Validators.required, Validators.min(1)]],
         amenities: ['', [Validators.required]],
+        images: [[], [Validators.required, Validators.minLength(1), Validators.maxLength(5)]]
     });
 
     ngOnInit() {
@@ -97,8 +104,8 @@ export class AdminServicesManagementComponent {
         this.isEditMode = true;
         this._roomService.getRoomDetails(service.id)
             .subscribe((res) => {
-                const { id, type, name, description, capacity, pricePerNight, totalRooms, amenities } = res;
-                this.serviceForm.setValue({ id: service.id, type, name, description, capacity, pricePerNight, totalRooms, amenities });
+                const { type, name, description, capacity, pricePerNight, totalRooms, amenities, images } = res;
+                this.serviceForm.setValue({ id: service.id, type, name, description, capacity, pricePerNight, totalRooms, amenities, images: images || [] });
                 this.serviceForm.updateValueAndValidity();
                 this.openPanel();
                 this.selectedServices = amenities;
@@ -116,6 +123,7 @@ export class AdminServicesManagementComponent {
             pricePerNight: '',
             totalRooms: '',
             amenities: '',
+            images: []
         });
         this.selectedServices = [];
 
@@ -127,18 +135,21 @@ export class AdminServicesManagementComponent {
         this.sideNavPanel.toggle();
     }
 
-    onSubmitForm() {
+    async onSubmitForm() {
         console.log(this.serviceForm.getRawValue());
-        if (this.serviceForm.valid) {
-            const apiToCall = this.isEditMode ?
-                this._roomService.updateRoom(this.serviceForm.getRawValue()) :
-                this._roomService.createRoom(this.serviceForm.getRawValue());
+        const imagesUrl = await this.imageUploader.saveChanges();
+        console.log(imagesUrl);
+        this.serviceForm.get('images')?.setValue(imagesUrl);
 
-            apiToCall
-                .subscribe(() => {
-                    this.sideNavPanel.close().then(() => this._initDataSource());
-                })
-        }
+        const apiToCall = this.isEditMode ?
+            this._roomService.updateRoom(this.serviceForm.getRawValue()) :
+            this._roomService.createRoom(this.serviceForm.getRawValue());
+
+        apiToCall
+            .pipe(concatMap(() => apiToCall))
+            .subscribe(() => {
+                this.sideNavPanel.close().then(() => this._initDataSource());
+            })
     }
 
     removeRoomServices(service: string): void {

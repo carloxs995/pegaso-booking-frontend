@@ -1,37 +1,4 @@
-.mat-toolbar {
-    justify-content: space-between;
-}
-
-.sidenav-container {
-    height: 100vh;
-}
-
-mat-sidenav {
-    width: 400px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.sidenav-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-mat-form-field {
-    width: 100%;
-    margin-bottom: 16px;
-}
-
-.action-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.image-upload-container {
+.image-uploader {
     .upload-container {
         display: flex;
         flex-direction: column;
