@@ -79,7 +79,7 @@ export class RoomDetailsComponent implements OnInit {
         combineLatest([
             this.bookingForm.controls.checkOutDate.valueChanges,
             this.bookingForm.controls.guests.valueChanges,
-        ]).subscribe((newCheckIn) => {
+        ]).subscribe(() => {
             this.isAvailable = false;
             this.totalPrice = 0;
             this.showAvailabilityStatus = false;
@@ -140,7 +140,9 @@ export class RoomDetailsComponent implements OnInit {
                     queryParams: {
                         checkInDate: checkInDate.toISOString(),
                         checkOutDate: checkOutDate.toISOString(),
-                        guests: guests
+                        guests: guests,
+                        serviceName: this.room.type,
+                        totalPrice: this.totalPrice
                     }
                 });
             }

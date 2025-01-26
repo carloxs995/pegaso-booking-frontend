@@ -44,3 +44,18 @@ export interface IBookingListResponse {
         totalCount: number;
     }
 }
+
+export interface IBookingCreation {
+    customerFirstName: string;
+    customerLastName: string;
+    customerEmail: string;
+    customerPhone: string;
+    serviceName: string;
+    quantityGuests: number;
+    checkInDate: string;
+    checkOutDate: string;
+    paymentMethod: 'cash' ;
+    servicePrice: number;
+    serviceId: string;
+    notes?: string;
+}

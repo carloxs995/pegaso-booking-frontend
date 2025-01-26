@@ -1,0 +1,82 @@
+<div class="booking-form-container">
+    <h2>Prenotazione della Stanza</h2>
+
+    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="customerFirstName" placeholder="Inserisci il tuo nome">
+        <mat-error *ngIf="bookingForm.get('customerFirstName')?.invalid && bookingForm.get('customerFirstName')?.touched">
+          Nome richiesto
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cognome</mat-label>
+        <input matInput formControlName="customerLastName" placeholder="Inserisci il tuo cognome">
+        <mat-error *ngIf="bookingForm.get('customerLastName')?.invalid && bookingForm.get('customerLastName')?.touched">
+          Cognome richiesto
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="customerEmail" placeholder="Inserisci la tua email" type="email">
+        <mat-error *ngIf="bookingForm.get('customerEmail')?.invalid && bookingForm.get('customerEmail')?.touched">
+          Email non valida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Telefono</mat-label>
+        <input matInput formControlName="customerPhone" placeholder="Inserisci il tuo numero di telefono">
+        <mat-error *ngIf="bookingForm.get('customerPhone')?.invalid && bookingForm.get('customerPhone')?.touched">
+          Inserisci un numero valido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo di Servizio</mat-label>
+        <input matInput formControlName="serviceName" readonly>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Ospiti</mat-label>
+        <input matInput formControlName="quantityGuests" readonly>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Check-in</mat-label>
+        <input matInput [value]="formatDate(bookingForm.get('checkInDate')?.value)" disabled readonly>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Check-out</mat-label>
+        <input matInput [value]="formatDate(bookingForm.get('checkOutDate')?.value)" disabled readonly>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Metodo di pagamento</mat-label>
+        <mat-select formControlName="paymentMethod" required>
+          <mat-option value="credit_card">Carta di Credito</mat-option>
+          <mat-option value="paypal">PayPal</mat-option>
+          <mat-option value="cash">Pagamento in struttura</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Prezzo Totale</mat-label>
+        <input matInput [value]="'€ ' + bookingForm.get('servicePrice')?.value" disabled readonly>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Note</mat-label>
+        <textarea matInput formControlName="notes" rows="3" placeholder="Aggiungi note opzionali"></textarea>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid">
+          Conferma Prenotazione
+        </button>
+      </div>
+    </form>
+  </div>
