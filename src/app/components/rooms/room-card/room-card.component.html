@@ -1,13 +1,22 @@
-<mat-card class="item-card">
+<mat-card>
     <mat-card-header>
-        <mat-card-title>{{ item.name }}</mat-card-title>
+        <mat-card-title matTooltip="{{ item.name }}">
+            <div class="truncate-text">
+                {{ item.name }}
+            </div>
+        </mat-card-title>
     </mat-card-header>
-    <img mat-card-image [src]="item?.images?.length ? item.images[0] : '/'" alt="{{ item.name }}"> <!--TODO: Add IMAGE-->
+    <img mat-card-image [src]="item.images[0]" alt="{{ item.name }}">
     <mat-card-content>
-        <p>{{ item.description }}</p>
-        <p><strong>&euro;{{item.pricePerNight}}</strong> / notte</p>
+        <p style="font-weight: 600;">
+            {{ item.type }}
+        </p>
+        <p><strong>&euro;{{ item.pricePerNight }}</strong> / notte</p>
+        <p matTooltip="{{ item.description }}" class="truncate-text">
+            {{ item.description }}
+        </p>
     </mat-card-content>
-    <mat-card-actions>
-        <button mat-button color="accent">Dettagli</button>
+    <mat-card-actions align="end">
+        <button mat-button color="primary" (click)="onNavigateToDetails()">Dettagli</button>
     </mat-card-actions>
 </mat-card>
