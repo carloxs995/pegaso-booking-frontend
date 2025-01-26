@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { FirebaseBackendService } from './firebase-backend.service';
 import { Observable } from 'rxjs';
-import { IRoomDetails, RoomFilters } from '../models/room.models';
+import { IRoomDetails, IRoomsAvailability, RoomFilters } from '../models/room.models';
 
 @Injectable({
     providedIn: 'root'
@@ -24,5 +24,9 @@ export class RoomsService {
 
     getRoomDetails(id: string): Observable<IRoomDetails> {
         return this._firebaseBackendService.get(`/rooms/${id}/details`);
+    }
+
+    checkAvailability(id: string, checkInDate: string, checkOutDate: string, quantityGuests: number): Observable<{ data: IRoomsAvailability }> {
+        return this._firebaseBackendService.get(`/rooms/check-availability/${id}`, { checkInDate, checkOutDate, quantityGuests });
     }
 }

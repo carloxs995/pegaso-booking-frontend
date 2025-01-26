@@ -103,7 +103,6 @@ export class UserInfoComponent {
     }
 
     navigateTo(type: 'admin' | 'userSettings') {
-        console.log('ci sono');
         const url = type === 'admin' ? '/admin' : '/user';
         this._router.navigate([url]);
     }

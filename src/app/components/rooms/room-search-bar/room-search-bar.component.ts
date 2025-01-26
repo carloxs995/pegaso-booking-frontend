@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ROOM_TYPE_AVAILABLE, RoomFilters } from '../../../models/room.models';
+import { addDays } from '../../../helpers/date.helpers';
 
 @Component({
     selector: 'room-search-bar',
@@ -37,7 +38,7 @@ export class RoomSearchBarComponent {
     searchForm: FormGroup<Record<keyof RoomFilters, FormControl>> = new FormGroup({
         serviceType: new FormControl(''),
         checkInDate: new FormControl(new Date(), Validators.required),
-        checkOutDate: new FormControl(this._addDays(new Date(), 1), Validators.required),
+        checkOutDate: new FormControl(addDays(new Date(), 1), Validators.required),
         guests: new FormControl(1, [Validators.required, Validators.min(1)])
     });
 
@@ -48,17 +49,11 @@ export class RoomSearchBarComponent {
         this.dateAdapter.setLocale('it-IT');
         this.searchForm.controls.checkInDate.valueChanges.subscribe((newCheckIn) => {
             if (newCheckIn) {
-                const checkOut = this._addDays(newCheckIn, 1);
+                const checkOut = addDays(newCheckIn, 1);
                 this.searchForm.controls.checkOutDate.setValue(checkOut);
                 this.searchForm.controls.checkOutDate.updateValueAndValidity();
             }
         });
-    }
-
-    private _addDays(date: Date, days: number): Date {
-        const result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
     }
 
     triggerSearch(): void {

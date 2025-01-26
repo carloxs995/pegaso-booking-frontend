@@ -1,0 +1,75 @@
+<div class="room-details-container" *ngIf="room">
+    <h1 class="title">{{ room.name }}</h1>
+
+    <gallery [items]="galleryImages" thumbPosition="bottom"></gallery>
+
+    <div class="room-content">
+        <div class="room-info">
+            <div class="info-section">
+                <h2>Descrizione della Stanza</h2>
+                <p>{{ room.description }}</p>
+            </div>
+
+            <div class="info-section">
+                <h2>Tipologia</h2>
+                <p style="font-weight: bold; text-transform: uppercase;"><mat-icon>hotel</mat-icon> {{room.type }}</p>
+            </div>
+
+            <div class="info-section">
+                <h2>Prezzo</h2>
+                <h1>
+                    <mat-icon>euro</mat-icon>
+                    {{room.pricePerNight }} / notte
+                </h1>
+            </div>
+
+            <div class="info-section">
+                <h2>Servizi</h2>
+                <div class="room-amenities">
+                    <mat-chip *ngFor="let amenity of room.amenities">
+                        <mat-icon>check_circle</mat-icon> {{ amenity }}
+                    </mat-chip>
+                </div>
+            </div>
+        </div>
+        <div class="room-booking">
+            <mat-card class="booking-card">
+
+                <form [formGroup]="bookingForm">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Check-in</mat-label>
+                        <input matInput [matDatepicker]="checkInPicker" [min]="TODAY" placeholder="Seleziona data"
+                               formControlName="checkInDate">
+                        <mat-datepicker-toggle matIconSuffix [for]="checkInPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #checkInPicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Check-out</mat-label>
+                        <input matInput [matDatepicker]="checkOutPicker" [min]="bookingForm.controls.checkInDate.value"
+                         placeholder="Seleziona data"
+                               formControlName="checkOutDate">
+                        <mat-datepicker-toggle matIconSuffix [for]="checkOutPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #checkOutPicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Ospiti</mat-label>
+                        <input matInput type="number" placeholder="Numero di ospiti" formControlName="guests">
+                    </mat-form-field>
+                </form>
+
+                <div class="availability-container">
+                    <h2 *ngIf="totalPrice && isAvailable">Prezzo totale: &euro;{{ totalPrice }}</h2>
+                    <p *ngIf="totalPrice && isAvailable" style="text-align: center;">Clicca adesso sul pulsante
+                        <b>Prenota</b> <br /> ed effettua la tua
+                        prenotazione</p>
+                    <button mat-raised-button color="primary" (click)="onCheckAvailability()">{{totalPrice ? 'Prenota' :
+                        'Calcola Prezzo'}}</button>
+                    <ng-container *ngIf="showAvailabilityStatus">
+                        <span *ngIf="!isAvailable" class="not-available">Nessuna disponibilità</span>
+                    </ng-container>
+                </div>
+            </mat-card>
+        </div>
+    </div>

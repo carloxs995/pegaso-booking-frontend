@@ -22,6 +22,7 @@ export interface IBookingDetails {
     paymentMethod: PaymentMethod;
     servicePrice: number;
     createdBy: string;
+    serviceId: string;
 }
 
 export interface IBookingsFiltersListSchema {

@@ -1,6 +1,6 @@
 export type RoomType = 'Standard' | 'Deluxe' | 'Suite' | 'Luxury' | 'Penthouse';
 
-export const ROOM_TYPE_AVAILABLE: RoomType[] = ['Standard', 'Deluxe' , 'Suite', 'Luxury', 'Penthouse']
+export const ROOM_TYPE_AVAILABLE: RoomType[] = ['Standard', 'Deluxe', 'Suite', 'Luxury', 'Penthouse']
 
 export interface IRoomDetails {
     id: string;
@@ -20,4 +20,11 @@ export interface RoomFilters {
     guests: number;
     checkInDate: string;
     checkOutDate: string;
+}
+
+export interface IRoomsAvailability {
+    roomsMaxQuantity: number;
+    freeRooms: number;
+    isAvailable: boolean;
+    totalPrice: number;
 }

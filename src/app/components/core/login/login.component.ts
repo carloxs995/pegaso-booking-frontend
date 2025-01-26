@@ -79,7 +79,7 @@ export class LoginComponent {
                 next: res => {
                     this.isLoading = false;
                     console.log('User:', res);
-                    this.dialogRef.close();
+                    this.dialogRef.close(true);
                 },
                 error: err => {
                     this.isLoading = false;

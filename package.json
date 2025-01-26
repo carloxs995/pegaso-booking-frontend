@@ -22,6 +22,7 @@
     "@angular/router": "^19.1.2",
     "@auth0/angular-jwt": "^5.2.0",
     "firebase": "^11.2.0",
+    "ng-gallery": "^12.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
