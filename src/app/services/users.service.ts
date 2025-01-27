@@ -10,7 +10,7 @@ export class UsersService {
 
     private readonly _firebaseBackendService: FirebaseBackendService = inject(FirebaseBackendService);
 
-    getUsersList(pageSize?: number, pageToken?: string): Observable<{ data: { items: UserDetails[], pageToken: string | undefined } }> {
+    getUsersList(pageSize: number = 50, pageToken?: string): Observable<{ data: { items: UserDetails[], pageToken: string | undefined } }> {
         return this._firebaseBackendService.get('/users', { pageSize, pageToken });
     }
 }

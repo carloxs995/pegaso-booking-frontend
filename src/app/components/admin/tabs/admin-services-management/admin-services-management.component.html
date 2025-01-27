@@ -12,7 +12,7 @@
                 <mat-label>Tipo di Servizio</mat-label>
                 <mat-select formControlName="type" required [disabled]="isEditMode">
                     @for(service of serviceTypes; track service) {
-                    <mat-option [value]="service">{{ service }}</mat-option>
+                        <mat-option [value]="service">{{ service }}</mat-option>
                     }
                 </mat-select>
             </mat-form-field>
