@@ -16,6 +16,7 @@ import { IRoomDetails } from '../../../models/room.models';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { concatMap, firstValueFrom, from } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
+import { BookingDeleteDialogComponent } from './booking-delete-dialog/booking-delete-dialog.component';
 
 @Component({
     imports: [
@@ -150,6 +151,14 @@ export class BookingManageComponent {
     }
 
     openDeleteDialog(): void {
-        this.isDialogOpened = true;
+        this._dialog.open(BookingDeleteDialogComponent, {
+            width: '400px',
+            data: { booking: this.bookingDetails }
+        }).afterClosed()
+            .subscribe(result => {
+                if (result === 'confirm') {
+                    window.location.reload();
+                }
+            });
     }
 }

@@ -124,7 +124,8 @@ export class AdminBookingsManagementComponent {
         this._dialog.open(AdminBookingsDeleteDialog, {
             width: '400px',
             data: { booking }
-        }).afterClosed()
+        }).
+            afterClosed()
             .subscribe(result => {
                 if (result === 'confirm') {
                     this._initDataSource();

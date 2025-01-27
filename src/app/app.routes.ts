@@ -18,6 +18,9 @@ export const routes: Routes = [
     },
     {
         path: 'bookings',
+        canActivateChild: [
+            // () => !!inject(AuthenticationService).currentUserData$.value //TODO: reenabled it
+        ],
         children: [
             {
                 path: 'create/:roomId',

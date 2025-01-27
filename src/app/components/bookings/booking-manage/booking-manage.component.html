@@ -48,8 +48,8 @@
                         <span [ngClass]="statusColor">{{ bookingDetails.status | titlecase }}</span>
                     </div>
                 </mat-card-content>
-                <mat-card-actions align="end">
-                    <button mat-raised-button color="warn" (click)="openDeleteDialog()">Elimina Prenotazione</button>
+                <mat-card-actions align="end" *ngIf="bookingDetails.status !== 'cancelled'">
+                    <button mat-raised-button color="warn" (click)="openDeleteDialog()">Annulla Prenotazione</button>
                 </mat-card-actions>
             </mat-card>
         </div>
