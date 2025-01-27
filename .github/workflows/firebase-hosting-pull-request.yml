@@ -19,9 +19,9 @@ jobs:
 
       - name: Create environment file
         run: |
-          echo "export const environment = {" > src/environments/environment.ts
+          echo "export const environment = {" > src/environment.ts
           echo "  production: true," >> src/environments/environment.ts
-          echo "  firebase: {" >> src/environments/environment.ts
+          echo "  firebaseConfig: {" >> src/environments/environment.ts
           echo "    apiKey: '${{ secrets.FIREBASE_API_KEY }}'," >> src/environments/environment.ts
           echo "    projectId: '${{ secrets.FIREBASE_PROJECT_ID }}'," >> src/environments/environment.ts
           echo "    appId: '${{ secrets.FIREBASE_APP_ID }}'" >> src/environments/environment.ts
