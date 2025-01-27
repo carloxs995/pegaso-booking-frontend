@@ -23,6 +23,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { map } from 'rxjs';
 import { formatDate } from '../../../../helpers/date.helpers';
 import { getStatusInfo } from '../../../../helpers/bookings.helpers';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-admin-bookings-management',
@@ -42,7 +43,8 @@ import { getStatusInfo } from '../../../../helpers/bookings.helpers';
         MatIconModule,
         MatPaginatorModule,
         MatDialogModule,
-        MatToolbarModule
+        MatToolbarModule,
+        MatProgressSpinnerModule
     ],
     templateUrl: './admin-bookings-management.component.html',
     styleUrl: './admin-bookings-management.component.scss',
@@ -56,6 +58,8 @@ export class AdminBookingsManagementComponent {
 
     filters: IBookingsFiltersListSchema = {
     };
+
+    isLoading: boolean = true;
 
     serviceTypes = ROOM_TYPE_AVAILABLE;
     statuses = BookingStatuses;
@@ -75,6 +79,7 @@ export class AdminBookingsManagementComponent {
     }
 
     private _initDataSource(): void {
+        this.isLoading = true;
         this._bookingsService.getBookingsList({
             ...this.filters,
             isFromAdminArea: true
@@ -82,6 +87,7 @@ export class AdminBookingsManagementComponent {
             this.dataSource = new MatTableDataSource(res.data.items)
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
+            this.isLoading = false;
         })
     }
 

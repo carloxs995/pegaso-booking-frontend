@@ -43,6 +43,18 @@
             width: 84px;
         }
     }
+
+    .loading-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+    }
+
+    .spinner-large {
+        width: 80px !important;
+        height: 80px !important;
+    }
 }
 
 .delete-text {

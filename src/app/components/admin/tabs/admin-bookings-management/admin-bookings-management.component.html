@@ -31,76 +31,83 @@
             </mat-action-row>
         </mat-expansion-panel>
     </div>
-    <table mat-table [dataSource]="dataSource" matSort>
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Numero Prenotazione</th>
-            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-        </ng-container>
 
-        <ng-container matColumnDef="serviceName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo di Stanza</th>
-            <td mat-cell *matCellDef="let element">{{ element.serviceName }}</td>
-        </ng-container>
+    <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner class="spinner-large"></mat-spinner>
+    </div>
 
-        <ng-container matColumnDef="checkInDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Data CheckIn</th>
-            <td mat-cell *matCellDef="let element">{{ formatDate(element.checkInDate) }}</td>
-        </ng-container>
+    <div [style.display]="isLoading ? 'none' : 'block'">
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Numero Prenotazione</th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+            </ng-container>
 
-        <ng-container matColumnDef="checkOutDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Data CheckOut</th>
-            <td mat-cell *matCellDef="let element">{{ formatDate(element.checkOutDate) }}</td>
-        </ng-container>
+            <ng-container matColumnDef="serviceName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo di Stanza</th>
+                <td mat-cell *matCellDef="let element">{{ element.serviceName }}</td>
+            </ng-container>
 
-        <ng-container matColumnDef="customerName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome Cliente</th>
-            <td mat-cell *matCellDef="let element">{{ element.customerFirstName + ' ' + element.customerLastName }}</td>
-        </ng-container>
+            <ng-container matColumnDef="checkInDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Data CheckIn</th>
+                <td mat-cell *matCellDef="let element">{{ formatDate(element.checkInDate) }}</td>
+            </ng-container>
 
-        <ng-container matColumnDef="isPaid">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato Pagamento</th>
-            <td mat-cell *matCellDef="let element">
-                <mat-icon color="{{ element.isPaid ? 'primary' : 'warn' }}">
-                    {{ element.isPaid ? 'check_circle' : 'cancel' }}
-                </mat-icon>
-            </td>
-        </ng-container>
+            <ng-container matColumnDef="checkOutDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Data CheckOut</th>
+                <td mat-cell *matCellDef="let element">{{ formatDate(element.checkOutDate) }}</td>
+            </ng-container>
 
-        <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato Prenotazione</th>
-            <td mat-cell *matCellDef="let element" [ngStyle]="{'color':getStatusInfo(element.status).color}">
-                <div class="status-container">
-                    <mat-icon>
-                        {{getStatusInfo(element.status).icon}}
+            <ng-container matColumnDef="customerName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome Cliente</th>
+                <td mat-cell *matCellDef="let element">{{ element.customerFirstName + ' ' + element.customerLastName }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="isPaid">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato Pagamento</th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-icon color="{{ element.isPaid ? 'primary' : 'warn' }}">
+                        {{ element.isPaid ? 'check_circle' : 'cancel' }}
                     </mat-icon>
-                    {{getStatusInfo(element.status).label}}
-                </div>
-            </td>
-        </ng-container>
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Azioni</th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-icon-button [matMenuTriggerFor]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="onEdit(element)">
-                        <mat-icon>edit</mat-icon> Modifica
-                    </button>
-                    <button mat-menu-item (click)="onConfirmPayment(element)">
-                        <mat-icon>payment</mat-icon> Conferma Pagamento
-                    </button>
-                    <button mat-menu-item (click)="onDelete(element)" class="delete-option">
-                        <mat-icon>delete</mat-icon> <span class="delete-text">Delete</span>
-                    </button>
-                </mat-menu>
-            </td>
-        </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato Prenotazione</th>
+                <td mat-cell *matCellDef="let element" [ngStyle]="{'color':getStatusInfo(element.status).color}">
+                    <div class="status-container">
+                        <mat-icon>
+                            {{getStatusInfo(element.status).icon}}
+                        </mat-icon>
+                        {{getStatusInfo(element.status).label}}
+                    </div>
+                </td>
+            </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Azioni</th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="onEdit(element)">
+                            <mat-icon>edit</mat-icon> Modifica
+                        </button>
+                        <button mat-menu-item (click)="onConfirmPayment(element)">
+                            <mat-icon>payment</mat-icon> Conferma Pagamento
+                        </button>
+                        <button mat-menu-item (click)="onDelete(element)" class="delete-option">
+                            <mat-icon>delete</mat-icon> <span class="delete-text">Delete</span>
+                        </button>
+                    </mat-menu>
+                </td>
+            </ng-container>
 
-    <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
 </div>
