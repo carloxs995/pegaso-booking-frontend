@@ -31,6 +31,13 @@ mat-form-field {
     margin-top: 20px;
 }
 
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px; /* Altezza per centrare lo spinner */
+}
+
 .image-upload-container {
     .upload-container {
         display: flex;

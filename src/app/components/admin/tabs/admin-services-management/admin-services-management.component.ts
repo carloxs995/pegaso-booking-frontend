@@ -67,6 +67,8 @@ export class AdminServicesManagementComponent {
 
     isSaving: boolean = false;
 
+    isLoading: boolean = true;
+
     private readonly _router: Router = inject(Router);
     private readonly _roomService: RoomsService = inject(RoomsService);
     private readonly _formBuilder: FormBuilder = inject(FormBuilder);
@@ -84,7 +86,7 @@ export class AdminServicesManagementComponent {
         capacity: ['', [Validators.required, Validators.min(1)]],
         pricePerNight: ['', [Validators.required, Validators.min(1)]],
         totalRooms: ['', [Validators.required, Validators.min(1)]],
-        amenities: ['', [Validators.required]],
+        amenities: [[], [Validators.required, Validators.minLength(1)]],
         images: [[], [Validators.required, Validators.minLength(1), Validators.maxLength(5)]]
     });
 
@@ -93,10 +95,12 @@ export class AdminServicesManagementComponent {
     }
 
     private _initDataSource(): void {
+        this.isLoading = true;
         this._roomService.getRoomsList().subscribe(res => {
             this.dataSource = new MatTableDataSource(res.data)
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
+            this.isLoading = false;
         })
     }
 
@@ -129,7 +133,7 @@ export class AdminServicesManagementComponent {
             capacity: '',
             pricePerNight: '',
             totalRooms: '',
-            amenities: '',
+            amenities: [],
             images: []
         });
         this.selectedServices = [];
@@ -139,6 +143,7 @@ export class AdminServicesManagementComponent {
     }
 
     openPanel(): void {
+        this.isSaving = false;
         this.sideNavPanel.toggle();
     }
 
@@ -147,12 +152,21 @@ export class AdminServicesManagementComponent {
         const imagesUrl = await this.imageUploader.saveChanges();
         this.serviceForm.get('images')?.setValue(imagesUrl);
 
+        if(!imagesUrl.length) {
+            window.alert('Inserisci almeno un immagine')
+        }
+
+        if (this.serviceForm.invalid) {
+            this.isSaving = false;
+            console.log('FORM INVALIDO!!')
+            return;
+        }
+
         const apiToCall = this.isEditMode ?
             this._roomService.updateRoom(this.serviceForm.getRawValue()) :
             this._roomService.createRoom(this.serviceForm.getRawValue());
 
         apiToCall
-            .pipe(concatMap(() => apiToCall))
             .subscribe(() => {
                 this.isSaving = false;
                 this.sideNavPanel.close().then(() => this._initDataSource());
