@@ -21,10 +21,10 @@ import { Router } from '@angular/router';
                 <img [src]="'https://i.pravatar.cc/300'" alt="User Avatar" class="avatar"> <!-- TODO: retrieve avatar from BE -->
             </button>
             <mat-menu #userMenu="matMenu">
-                <button mat-menu-item (click)="navigateTo('userSettings')">
+                <!-- <button mat-menu-item (click)="navigateTo('userSettings')">
                     <mat-icon>account_circle</mat-icon>
                     Profile
-                </button>
+                </button> -->
                 <button mat-menu-item *ngIf="currentUserData.role === UserRole.ADMIN" (click)="navigateTo('admin')">
                     <mat-icon>settings</mat-icon>
                     Admin Area

@@ -17,6 +17,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { concatMap, firstValueFrom, from } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { BookingDeleteDialogComponent } from './booking-delete-dialog/booking-delete-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     imports: [
@@ -59,6 +60,7 @@ export class BookingManageComponent {
     private readonly _bookingsService = inject(BookingsService);
     private readonly _roomsService = inject(RoomsService);
     private readonly _dialog: MatDialog = inject(MatDialog);
+    private readonly _snackBar = inject(MatSnackBar);
 
     isEditing: boolean = false;
     roomDetails!: IRoomDetails;
@@ -128,9 +130,19 @@ export class BookingManageComponent {
 
     onSubmit() {
         if (this.bookingForm.valid) {
+            if (this.isEditing) {
+                this._bookingsService.updateBooking(this.bookingDetails.id, this.bookingForm.getRawValue())
+                    .subscribe(() => {
+                        this._router.navigate(['/bookings']);
+                        this._snackBar.open(`Prenotazione #${this.bookingDetails.id} Aggiornata!`, 'Chiudi', { duration: 5000 });
+                    })
+                return;
+            }
+
             this._bookingsService.createBooking(this.bookingForm.getRawValue())
-                .subscribe(res => {
-                    console.log(res);
+                .subscribe(() => {
+                    this._router.navigate(['/bookings']);
+                    this._snackBar.open('Prenotazione Creata!', 'Chiudi', { duration: 5000 });
                 })
         }
     }
@@ -144,15 +156,6 @@ export class BookingManageComponent {
         return `status-${this.bookingDetails.status}`;
     }
 
-    deleteBooking(): void {
-        console.log('Prenotazione eliminata');
-        this._router.navigate(['/']);
-    }
-
-    closeDeleteDialog(): void {
-        this._dialog.closeAll();
-    }
-
     openDeleteDialog(): void {
         this._dialog.open(BookingDeleteDialogComponent, {
             width: '400px',
@@ -160,7 +163,8 @@ export class BookingManageComponent {
         }).afterClosed()
             .subscribe(result => {
                 if (result === 'confirm') {
-                    window.location.reload();
+                    this._router.navigate(['/bookings']);
+                    this._snackBar.open(`Prenotazione #${this.bookingDetails.id} Annullata`, 'Chiudi', { duration: 5000 });
                 }
             });
     }
