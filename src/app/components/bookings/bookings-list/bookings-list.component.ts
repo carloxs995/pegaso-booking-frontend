@@ -92,14 +92,14 @@ export class BookingsListComponent {
             const parsedFilter = JSON.parse(filter);
             console.log(data, parsedFilter);
             return (
-                (parsedFilter.serviceName ? data.serviceName === parsedFilter.serviceName : true)
+                (parsedFilter.id ? data.id === parsedFilter.id : true)
             );
         };
         this.dataSource.filter = JSON.stringify(this.filters);
     }
 
     clearFilters() {
-        this.filters = { serviceName: undefined, isPaid: false };
+        this.filters = { id: '' };
         this.dataSource.filter = '';
     }
 

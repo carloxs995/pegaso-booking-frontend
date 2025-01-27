@@ -36,6 +36,7 @@ export interface IBookingsFiltersListSchema {
     } | undefined;
     isPaid?: boolean;
     isFromAdminArea?: boolean;
+    id?: string;
 }
 
 export interface IBookingListResponse {
