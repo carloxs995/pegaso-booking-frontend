@@ -14,12 +14,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { BookingStatus, BookingStatuses, IBookingDetails, IBookingsFiltersListSchema } from '../../../models/booking.model';
 import { ROOM_TYPE_AVAILABLE } from '../../../models/room.models';
 import { BookingsService } from '../../../services/bookings.service';
 import { formatDate } from '../../../helpers/date.helpers';
 import { getStatusInfo } from '../../../helpers/bookings.helpers';
+import { AdminBookingsDeleteDialog } from '../../admin/tabs/admin-bookings-management/admin-bookings-delete-dialog/admin-bookings-delete-dialog.component';
 
 
 @Component({
@@ -39,7 +40,8 @@ import { getStatusInfo } from '../../../helpers/bookings.helpers';
         MatIconModule,
         MatPaginatorModule,
         MatDialogModule,
-        MatToolbarModule
+        MatToolbarModule,
+        RouterModule
     ],
     templateUrl: './bookings-list.component.html',
     styleUrl: './bookings-list.component.scss',
@@ -48,7 +50,7 @@ import { getStatusInfo } from '../../../helpers/bookings.helpers';
 export class BookingsListComponent {
     @HostBinding('className') className = 'booking-list';
 
-    displayedColumns: string[] = ['id', 'serviceName', 'checkInDate', 'checkOutDate', 'status'];
+    displayedColumns: string[] = ['id', 'serviceName', 'checkInDate', 'checkOutDate', 'status', 'actions'];
     dataSource: MatTableDataSource<IBookingDetails> = new MatTableDataSource();
 
     filters: IBookingsFiltersListSchema = {
@@ -59,6 +61,7 @@ export class BookingsListComponent {
 
     private readonly _router: Router = inject(Router);
     private readonly _bookingsService: BookingsService = inject(BookingsService);
+    private readonly _dialog: MatDialog = inject(MatDialog);
 
     formatDate = (date: string): string => formatDate(date);
     getStatusInfo = (status: BookingStatus) => getStatusInfo(status);
@@ -100,4 +103,16 @@ export class BookingsListComponent {
         this.dataSource.filter = '';
     }
 
+    onDelete(booking: IBookingDetails) {
+        this._dialog.open(AdminBookingsDeleteDialog, {
+            width: '400px',
+            data: { booking }
+        }).
+            afterClosed()
+            .subscribe(result => {
+                if (result === 'confirm') {
+                    this._initDataSource();
+                }
+            });
+    }
 }

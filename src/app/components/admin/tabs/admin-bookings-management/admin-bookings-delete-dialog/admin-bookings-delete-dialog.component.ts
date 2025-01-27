@@ -14,8 +14,8 @@ import { BookingsService } from '../../../../../services/bookings.service';
     <h2 mat-dialog-title>Elimina Prenotazione</h2>
     <mat-dialog-content>
       <p>
-        Sei sicuro di voler <b style="color:red">ELIMINARE</b> la prenotazione di
-        <b>{{ data.booking.customerFirstName }} {{ data.booking.customerLastName }}</b>?
+        Sei sicuro di voler <b style="color:red">ELIMINARE</b> la prenotazione numero:
+        <b>{{ data.booking.id }}</b>?
       </p>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
