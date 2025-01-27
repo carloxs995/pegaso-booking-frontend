@@ -23,6 +23,7 @@ import { getStorage } from 'firebase/storage';
 import { ImageService } from '../../../../services/image.service';
 import { ImageUploaderComponent } from "../../../core/image-uploader/image-uploader.component";
 import { concatMap, from } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-admin-services-management',
@@ -46,7 +47,8 @@ import { concatMap, from } from 'rxjs';
         MatSidenavModule,
         ReactiveFormsModule,
         MatChipsModule,
-        ImageUploaderComponent
+        ImageUploaderComponent,
+        MatProgressSpinnerModule
     ],
     templateUrl: './admin-services-management.component.html',
     styleUrl: './admin-services-management.component.scss'
@@ -62,6 +64,8 @@ export class AdminServicesManagementComponent {
     serviceTypes = ROOM_TYPE_AVAILABLE;
 
     isEditMode: boolean = false;
+
+    isSaving: boolean = false;
 
     private readonly _router: Router = inject(Router);
     private readonly _roomService: RoomsService = inject(RoomsService);
@@ -104,15 +108,18 @@ export class AdminServicesManagementComponent {
         this.isEditMode = true;
         this._roomService.getRoomDetails(service.id)
             .subscribe((res) => {
-                const { type, name, description, capacity, pricePerNight, totalRooms, amenities, images } = res;
-                this.serviceForm.setValue({ id: service.id, type, name, description, capacity, pricePerNight, totalRooms, amenities, images: images || [] });
+                this.serviceForm.setValue(res);
                 this.serviceForm.updateValueAndValidity();
                 this.openPanel();
-                this.selectedServices = amenities;
+                this.selectedServices = res.amenities;
             })
     }
 
     onCreateService(): void {
+        // Mostra solo i tipi di stanza ancora non creati
+        const bookedTypes = this.dataSource.data.map(room => room.type);
+        this.serviceTypes = ROOM_TYPE_AVAILABLE.filter(type => !bookedTypes.includes(type));
+
         this.isEditMode = false;
         this.serviceForm.setValue({
             id: '',
@@ -136,9 +143,8 @@ export class AdminServicesManagementComponent {
     }
 
     async onSubmitForm() {
-        console.log(this.serviceForm.getRawValue());
+        this.isSaving = true;
         const imagesUrl = await this.imageUploader.saveChanges();
-        console.log(imagesUrl);
         this.serviceForm.get('images')?.setValue(imagesUrl);
 
         const apiToCall = this.isEditMode ?
@@ -148,6 +154,7 @@ export class AdminServicesManagementComponent {
         apiToCall
             .pipe(concatMap(() => apiToCall))
             .subscribe(() => {
+                this.isSaving = false;
                 this.sideNavPanel.close().then(() => this._initDataSource());
             })
     }
