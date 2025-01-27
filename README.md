@@ -7,7 +7,7 @@ L'applicazione consente agli utenti di visualizzare le stanze disponibili, effet
 
 ---
 
-## DEMO APPLICAZIONE
+## HOSTING APPLICAZIONE
 L'app è accessibile all'indirizzo `https://pegaso-booking.web.app/`.
 
 Utenza Admin di demo:
