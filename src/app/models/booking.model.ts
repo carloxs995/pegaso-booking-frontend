@@ -1,6 +1,7 @@
 import { RoomType } from "./room.models";
 
 export type BookingStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed';
+export const BookingStatuses: BookingStatus[] = ['pending', 'confirmed', 'cancelled', 'completed'];
 
 export type PaymentMethod = 'credit_card' | 'paypal' | 'cash';
 

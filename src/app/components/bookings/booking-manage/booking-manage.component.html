@@ -44,8 +44,8 @@
                 </mat-card-header>
                 <mat-card-content>
                     <div class="status-display">
-                        <mat-icon [ngClass]="statusColor">{{ getStatusIcon() }}</mat-icon>
-                        <span [ngClass]="statusColor">{{ bookingDetails.status | titlecase }}</span>
+                        <mat-icon [ngStyle]="{'color': getStatusInfo(bookingDetails.status).color}">{{ getStatusInfo(bookingDetails.status).icon }}</mat-icon>
+                        <span [ngStyle]="{'color': getStatusInfo(bookingDetails.status).color}">{{ getStatusInfo(bookingDetails.status).label | titlecase }}</span>
                     </div>
                 </mat-card-content>
                 <mat-card-actions align="end" *ngIf="bookingDetails.status !== 'cancelled'">

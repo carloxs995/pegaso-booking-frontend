@@ -1,0 +1,45 @@
+.booking-list {
+    display: flex;
+    flex-flow: column;
+    flex-grow: 1;
+    height: 100%;
+
+    .search-bar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .filter-panel {
+        margin-bottom: 20px;
+    }
+
+    .filter-options {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .status-container {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+
+        mat-icon {
+            padding-right: 5px;
+        }
+    }
+
+    mat-table {
+        width: 100%;
+    }
+
+    mat-form-field {
+        width: 100%;
+    }
+
+    mat-paginator {
+        mat-form-field {
+            width: 84px;
+        }
+    }
+}

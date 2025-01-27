@@ -1,1 +1,67 @@
-<p>bookings-list works!</p>
+<mat-toolbar color="primary">
+    <span>Le tue prenotazioni</span>
+</mat-toolbar>
+
+<div class="table-container" style="margin-top: 20px;">
+    <div class="filters-bar">
+        <mat-expansion-panel class="filter-panel">
+            <mat-expansion-panel-header>
+                <mat-panel-title> Filtri Avanzati </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="filter-options">
+                <mat-form-field appearance="outline">
+                    <mat-label>Service Type</mat-label>
+                    <mat-select [(ngModel)]="filters.serviceName">
+                        <mat-option *ngFor="let type of serviceTypes" [value]="type">{{ type }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <mat-action-row>
+                <button mat-button color="primary" (click)="applyAdvancedFilter()">Applica Filtri</button>
+                <button mat-button color="warn" (click)="clearFilters()">Reset Filtri</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+    </div>
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="serviceName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Service Type</th>
+            <td mat-cell *matCellDef="let element">{{ element.serviceName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="checkInDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>CheckIn Date</th>
+            <td mat-cell *matCellDef="let element">{{ formatDate(element.checkInDate) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="checkOutDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>CheckOut Date</th>
+            <td mat-cell *matCellDef="let element">{{ formatDate(element.checkOutDate) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let element" [ngStyle]="{'color':getStatusInfo(element.status).color}">
+                <div class="status-container">
+                    <mat-icon>
+                        {{getStatusInfo(element.status).icon}}
+                    </mat-icon>
+                    {{getStatusInfo(element.status).label}}
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+    </table>
+
+    <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

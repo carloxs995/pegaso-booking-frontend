@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { formatDate } from '../../../helpers/date.helpers';
 import { BookingsService } from '../../../services/bookings.service';
-import { IBookingCreation, IBookingDetails } from '../../../models/booking.model';
+import { BookingStatus, IBookingCreation, IBookingDetails } from '../../../models/booking.model';
 import { MatCardModule } from '@angular/material/card';
 import { RoomsService } from '../../../services/rooms.service';
 import { IRoomDetails } from '../../../models/room.models';
@@ -18,6 +18,7 @@ import { concatMap, firstValueFrom, from } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { BookingDeleteDialogComponent } from './booking-delete-dialog/booking-delete-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { getStatusInfo } from '../../../helpers/bookings.helpers';
 
 @Component({
     imports: [
@@ -66,7 +67,9 @@ export class BookingManageComponent {
     roomDetails!: IRoomDetails;
     bookingDetails!: IBookingDetails; //only edit mode
     isDialogOpened: boolean = false;
-    isLoading: boolean = true;;
+    isLoading: boolean = true;
+
+    getStatusInfo = (status: BookingStatus) => getStatusInfo(status);
 
     ngOnInit(): void {
         this._activatedRoute.params.subscribe(params => {
@@ -145,15 +148,6 @@ export class BookingManageComponent {
                     this._snackBar.open('Prenotazione Creata!', 'Chiudi', { duration: 5000 });
                 })
         }
-    }
-
-    getStatusIcon(): string {
-        const status = this.bookingDetails.status;;
-        return status === 'confirmed' ? 'check_circle' : status === 'cancelled' ? 'cancel' : 'hourglass_empty';
-    }
-
-    get statusColor(): string {
-        return `status-${this.bookingDetails.status}`;
     }
 
     openDeleteDialog(): void {

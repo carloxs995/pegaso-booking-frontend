@@ -12,7 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { BookingsService } from '../../../../services/bookings.service';
-import { IBookingDetails, IBookingsFiltersListSchema } from '../../../../models/booking.model';
+import { BookingStatuses, IBookingDetails, IBookingsFiltersListSchema } from '../../../../models/booking.model';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AdminBookingsConfirmPaymentDialogComponent } from './admin-bookings-confirm-payment-dialog/admin-bookings-confirm-payment-dialog.component';
@@ -57,7 +57,7 @@ export class AdminBookingsManagementComponent {
     };
 
     serviceTypes = ROOM_TYPE_AVAILABLE;
-    statuses = ['Pending', 'Confirmed', 'Cancelled', 'Completed']; //TODO: refactor with enum
+    statuses = BookingStatuses;
 
     private readonly _router: Router = inject(Router);
     private readonly _dialog: MatDialog = inject(MatDialog);
