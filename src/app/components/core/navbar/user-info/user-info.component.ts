@@ -84,7 +84,10 @@ export class UserInfoComponent {
 
     logout() {
         getAuth().signOut()
-            .then(() => window.location.reload())
+            .then(() => {
+                this.authenticationService.currentUserData$.next(null);
+                this._router.navigate(['/']);
+            })
             .catch(e => console.log(e));
     }
 
