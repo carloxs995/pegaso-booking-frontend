@@ -20,7 +20,7 @@ export const routes: Routes = [
     {
         path: 'bookings',
         canActivateChild: [
-            () => !!inject(AuthenticationService).currentUserData$.value //TODO: riabilitare questa
+            () => !!inject(AuthenticationService).currentUserData$.value
         ],
         children: [
             {

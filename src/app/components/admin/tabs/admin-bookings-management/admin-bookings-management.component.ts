@@ -98,7 +98,7 @@ export class AdminBookingsManagementComponent {
     }
 
     applyAdvancedFilter() {
-        this.dataSource.filterPredicate = (data: any, filter: string) => { //TODO: typize it correctly
+        this.dataSource.filterPredicate = (data: any, filter: string) => {
             const parsedFilter = JSON.parse(filter);
             console.log(data, parsedFilter);
             return (

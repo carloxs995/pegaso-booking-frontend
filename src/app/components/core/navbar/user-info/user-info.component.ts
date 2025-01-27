@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
         <ng-container *ngIf="authenticationService.currentUserData$ | async as currentUserData; else loginButton">
             <span>{{ currentUserData.firstName + ' ' + currentUserData.lastName }}</span>
             <button mat-icon-button [matMenuTriggerFor]="userMenu">
-                <img [src]="'https://i.pravatar.cc/300'" alt="User Avatar" class="avatar"> <!-- TODO: retrieve avatar from BE -->
+                <img [src]="'https://i.pravatar.cc/300'" alt="User Avatar" class="avatar"> <!-- TODO: recuperare dal BE -->
             </button>
             <mat-menu #userMenu="matMenu">
                 <!-- <button mat-menu-item (click)="navigateTo('userSettings')">
