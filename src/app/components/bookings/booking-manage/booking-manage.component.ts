@@ -150,6 +150,6 @@ export class BookingManageComponent {
     }
 
     openDeleteDialog(): void {
-
+        this.isDialogOpened = true;
     }
 }

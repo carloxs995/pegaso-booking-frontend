@@ -30,27 +30,34 @@
                           placeholder="Inserisci eventuali richieste speciali"></textarea>
             </mat-form-field>
 
-            <!-- Status della prenotazione -->
-            <div *ngIf="isEditing" class="booking-status">
-                <mat-icon [ngClass]="statusColor">{{ getStatusIcon() }}</mat-icon>
-                <span [ngClass]="statusColor">{{ bookingDetails.status | titlecase }}</span>
-            </div>
-
             <button mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid">
                 {{ isEditing ? 'Salva Modifiche' : 'Conferma Prenotazione' }}
-            </button>
-
-            <button *ngIf="isEditing" mat-raised-button color="warn" (click)="openDeleteDialog()">
-                Elimina Prenotazione
             </button>
         </form>
     </div>
 
     <div class="booking-summary">
+        <div *ngIf="isEditing" class="booking-status-card">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>Status Prenotazione</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="status-display">
+                        <mat-icon [ngClass]="statusColor">{{ getStatusIcon() }}</mat-icon>
+                        <span [ngClass]="statusColor">{{ bookingDetails.status | titlecase }}</span>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions align="end">
+                    <button mat-raised-button color="warn" (click)="openDeleteDialog()">Elimina Prenotazione</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+
         <mat-card>
             <mat-card-header>
                 <mat-card-title>{{ roomDetails.name }}</mat-card-title>
-                <mat-card-subtitle>TIPO DI SERVIZIO: {{ roomDetails.type }} </mat-card-subtitle>
+                <mat-card-subtitle>TIPO DI SERVIZIO: {{ roomDetails.type }}</mat-card-subtitle>
             </mat-card-header>
 
             <img mat-card-image [src]="roomDetails.images[0]" alt="Room Image">
@@ -64,15 +71,3 @@
         </mat-card>
     </div>
 </div>
-
-<!-- Modale di conferma eliminazione -->
-<ng-template #deleteDialog *ngIf="isDialogOpened">
-    <h2 mat-dialog-title>Eliminare la prenotazione?</h2>
-    <mat-dialog-content>
-        <p>Sei sicuro di voler eliminare questa prenotazione? Questa azione non può essere annullata.</p>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-        <button mat-button (click)="closeDeleteDialog()">Annulla</button>
-        <button mat-raised-button color="warn" (click)="deleteBooking()">Conferma Eliminazione</button>
-    </mat-dialog-actions>
-</ng-template>

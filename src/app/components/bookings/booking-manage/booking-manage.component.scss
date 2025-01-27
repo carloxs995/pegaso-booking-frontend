@@ -5,6 +5,7 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    align-items: flex-start; // Impedisce di allineare le altezze
 
     .booking-form-container {
         flex: 2;
@@ -21,27 +22,6 @@
         mat-form-field {
             width: 100%;
             margin-bottom: 1rem;
-        }
-
-        .booking-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 10px 0;
-
-            .status-pending {
-                color: #ffb300;
-            }
-
-            .status-confirmed {
-                color: #4caf50;
-            }
-
-            .status-cancelled {
-                color: #f44336;
-            }
         }
 
         button {
@@ -67,7 +47,7 @@
             img {
                 width: 100%;
                 border-radius: 8px;
-                margin-bottom: 1rem;
+                margin: 1rem 0;
             }
 
             p {
@@ -82,16 +62,103 @@
             }
         }
     }
+
+    .booking-status-card {
+        margin-bottom: 1rem;
+
+        mat-card {
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+
+            .status-display {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin: 10px 0;
+
+                .status-pending {
+                    color: #ffb300;
+                }
+
+                .status-confirmed {
+                    color: #4caf50;
+                }
+
+                .status-cancelled {
+                    color: #f44336;
+                }
+            }
+
+            mat-card-actions {
+                display: flex;
+                justify-content: center;
+            }
+
+            button {
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+    }
 }
 
-mat-dialog-container {
-    background: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* Responsività */
+@media (max-width: 1024px) {
+    .booking-page {
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem;
+    }
+
+    .booking-form-container,
+    .booking-summary {
+        max-width: 100% !important;
+    }
 }
 
-mat-dialog-actions {
-    display: flex;
-    justify-content: space-between;
+@media (max-width: 768px) {
+    .booking-page {
+        padding: 1rem;
+    }
+
+    .booking-form-container {
+        padding: 1.5rem;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .booking-summary {
+        max-width: 100% !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .booking-page {
+        padding: 1rem;
+    }
+
+    .booking-form-container {
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    button {
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .booking-summary {
+        padding: 1rem;
+        max-width: 100% !important;
+    }
 }
