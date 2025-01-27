@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BookingDeleteDialogComponent } from './booking-delete-dialog/booking-delete-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { getStatusInfo } from '../../../helpers/bookings.helpers';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
     imports: [
@@ -30,7 +31,8 @@ import { getStatusInfo } from '../../../helpers/bookings.helpers';
         ReactiveFormsModule,
         MatCardModule,
         MatDialogModule,
-        MatIconModule
+        MatIconModule,
+        MatProgressSpinnerModule
     ],
     templateUrl: './booking-manage.component.html',
     styleUrl: './booking-manage.component.scss',
@@ -42,7 +44,7 @@ export class BookingManageComponent {
         customerFirstName: new FormControl('', [Validators.required]),
         customerLastName: new FormControl('', [Validators.required]),
         customerEmail: new FormControl('', [Validators.required, Validators.email]),
-        customerPhone: new FormControl('', [Validators.required, Validators.pattern(/^(\+\d{1,3}[- ]?)?\d{10}$/)]),
+        customerPhone: new FormControl('', [Validators.required, Validators.pattern(/^(\+\d{1,3}[- ]?)?\d{10}$/), Validators.maxLength(13)]),
         serviceName: new FormControl({ value: '', disabled: true }, Validators.required),
         quantityGuests: new FormControl({ value: 0, disabled: true }, Validators.required),
         checkInDate: new FormControl({ value: '', disabled: true }, Validators.required),
@@ -68,6 +70,7 @@ export class BookingManageComponent {
     bookingDetails!: IBookingDetails; //only edit mode
     isDialogOpened: boolean = false;
     isLoading: boolean = true;
+    isSubmitting: boolean = false;
 
     getStatusInfo = (status: BookingStatus) => getStatusInfo(status);
 
@@ -133,6 +136,7 @@ export class BookingManageComponent {
 
     onSubmit() {
         if (this.bookingForm.valid) {
+            this.isSubmitting = true;
             if (this.isEditing) {
                 this._bookingsService.updateBooking(this.bookingDetails.id, this.bookingForm.getRawValue())
                     .subscribe(() => {

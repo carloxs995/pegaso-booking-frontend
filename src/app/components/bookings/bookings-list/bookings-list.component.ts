@@ -22,6 +22,7 @@ import { formatDate } from '../../../helpers/date.helpers';
 import { getStatusInfo } from '../../../helpers/bookings.helpers';
 import { AdminBookingsDeleteDialog } from '../../admin/tabs/admin-bookings-management/admin-bookings-delete-dialog/admin-bookings-delete-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BookingDeleteDialogComponent } from '../booking-manage/booking-delete-dialog/booking-delete-dialog.component';
 
 
 @Component({
@@ -110,7 +111,7 @@ export class BookingsListComponent {
     }
 
     onDelete(booking: IBookingDetails) {
-        this._dialog.open(AdminBookingsDeleteDialog, {
+        this._dialog.open(BookingDeleteDialogComponent, {
             width: '400px',
             data: { booking }
         }).

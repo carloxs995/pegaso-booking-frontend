@@ -102,6 +102,13 @@
             flex: 1;
             min-width: 350px;
 
+            .spinner-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px 0;
+            }
+
             .booking-card {
                 padding: 20px;
                 border-radius: 10px;

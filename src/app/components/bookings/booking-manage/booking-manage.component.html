@@ -1,73 +1,88 @@
-<div class="booking-page" *ngIf="!isLoading">
-    <div class="booking-form-container">
-        <h2>{{ isEditing ? 'Modifica Prenotazione' : 'Completa la tua prenotazione' }}</h2>
+<div class="booking-page" [ngClass]="{'loading': isLoading}">
+    <ng-container *ngIf="isLoading; else bookingContent">
+        <div class="loading-container">
+            <mat-spinner class="spinner-large"></mat-spinner>
+        </div>
+    </ng-container>
 
-        <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
-            <mat-form-field appearance="outline">
-                <mat-label>Nome</mat-label>
-                <input matInput formControlName="customerFirstName" placeholder="Inserisci il tuo nome">
-            </mat-form-field>
+    <ng-template #bookingContent>
+        <div class="booking-form-container">
+            <h2>{{ isEditing ? 'Modifica Prenotazione' : 'Completa la tua prenotazione' }}</h2>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Cognome</mat-label>
-                <input matInput formControlName="customerLastName" placeholder="Inserisci il tuo cognome">
-            </mat-form-field>
+            <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nome</mat-label>
+                    <input matInput formControlName="customerFirstName" placeholder="Inserisci il tuo nome">
+                </mat-form-field>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Email</mat-label>
-                <input matInput type="email" formControlName="customerEmail" placeholder="Inserisci la tua email">
-            </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Cognome</mat-label>
+                    <input matInput formControlName="customerLastName" placeholder="Inserisci il tuo cognome">
+                </mat-form-field>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Telefono</mat-label>
-                <input matInput type="tel" formControlName="customerPhone"
-                       placeholder="Inserisci il tuo numero di telefono">
-            </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="customerEmail" placeholder="Inserisci la tua email">
+                </mat-form-field>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Note aggiuntive</mat-label>
-                <textarea matInput formControlName="notes"
-                          placeholder="Inserisci eventuali richieste speciali"></textarea>
-            </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Telefono</mat-label>
+                    <input matInput type="tel" formControlName="customerPhone"
+                           placeholder="Inserisci il tuo numero di telefono">
+                </mat-form-field>
 
-            <button *ngIf="!isEditing || bookingDetails?.status !== 'cancelled'" mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid">
-                {{ isEditing ? 'Salva Modifiche' : 'Conferma Prenotazione' }}
-            </button>
-        </form>
-    </div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Note aggiuntive</mat-label>
+                    <textarea matInput formControlName="notes"
+                              placeholder="Inserisci eventuali richieste speciali"></textarea>
+                </mat-form-field>
 
-    <div class="booking-summary">
-        <div *ngIf="isEditing" class="booking-status-card">
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>Status Prenotazione</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <div class="status-display">
-                        <mat-icon [ngStyle]="{'color': getStatusInfo(bookingDetails.status).color}">{{ getStatusInfo(bookingDetails.status).icon }}</mat-icon>
-                        <span [ngStyle]="{'color': getStatusInfo(bookingDetails.status).color}">{{ getStatusInfo(bookingDetails.status).label | titlecase }}</span>
-                    </div>
-                </mat-card-content>
-                <mat-card-actions align="end" *ngIf="bookingDetails.status !== 'cancelled'">
-                    <button mat-raised-button color="warn" (click)="openDeleteDialog()">Annulla Prenotazione</button>
-                </mat-card-actions>
-            </mat-card>
+                <ng-container *ngIf="isSubmitting; else spinnerTemplate">
+                    <button *ngIf="!isEditing || bookingDetails?.status !== 'cancelled'" mat-raised-button color="primary"
+                        type="submit" [disabled]="bookingForm.invalid">
+                        {{ isEditing ? 'Salva Modifiche' : 'Conferma Prenotazione' }}
+                    </button>
+                </ng-container>
+
+                <ng-template #spinnerTemplate>
+                    <mat-spinner class="spinner-small"></mat-spinner>
+                </ng-template>
+            </form>
         </div>
 
-        <mat-card>
-            <mat-card-header>
-                <mat-card-title>{{ roomDetails.name }}</mat-card-title>
-                <mat-card-subtitle>TIPO DI SERVIZIO: {{ roomDetails.type }}</mat-card-subtitle>
-            </mat-card-header>
+        <div class="booking-summary">
+            <div *ngIf="isEditing" class="booking-status-card">
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title>Status Prenotazione</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="status-display">
+                            <mat-icon [ngStyle]="{'color': getStatusInfo(bookingDetails.status).color}">{{ getStatusInfo(bookingDetails.status).icon }}</mat-icon>
+                            <span [ngStyle]="{'color': getStatusInfo(bookingDetails.status).color}">{{ getStatusInfo(bookingDetails.status).label | titlecase }}</span>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions align="end" *ngIf="bookingDetails.status !== 'cancelled'">
+                        <button mat-raised-button color="warn" (click)="openDeleteDialog()">Annulla Prenotazione</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
 
-            <img mat-card-image [src]="roomDetails.images[0]" alt="Room Image">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>{{ roomDetails.name }}</mat-card-title>
+                    <mat-card-subtitle>TIPO DI SERVIZIO: {{ roomDetails.type }}</mat-card-subtitle>
+                </mat-card-header>
 
-            <mat-card-content>
-                <p><strong>Check-in:</strong> {{ formatDate(bookingForm.get('checkInDate')?.value) }}</p>
-                <p><strong>Check-out:</strong> {{ formatDate(bookingForm.get('checkOutDate')?.value) }}</p>
-                <p><strong>Metodo di pagamento:</strong> {{ bookingForm.get('paymentMethod')?.value }}</p>
-                <p class="price">Totale: <strong>&euro;{{ bookingForm.get('servicePrice')?.value }}</strong></p>
-            </mat-card-content>
-        </mat-card>
-    </div>
+                <img mat-card-image [src]="roomDetails.images[0]" alt="Room Image">
+
+                <mat-card-content>
+                    <p><strong>Check-in:</strong> {{ formatDate(bookingForm.get('checkInDate')?.value) }}</p>
+                    <p><strong>Check-out:</strong> {{ formatDate(bookingForm.get('checkOutDate')?.value) }}</p>
+                    <p><strong>Metodo di pagamento:</strong> {{ bookingForm.get('paymentMethod')?.value }}</p>
+                    <p class="price">Totale: <strong>&euro;{{ bookingForm.get('servicePrice')?.value }}</strong></p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </ng-template>
 </div>

@@ -71,7 +71,7 @@
                         <button mat-menu-item [routerLink]="'/bookings/edit/'+element.id">
                             <mat-icon>edit</mat-icon> Modifica
                         </button>
-                        <button mat-menu-item (click)="onDelete(element)" class="delete-option">
+                        <button *ngIf="element.status !== 'cancelled'" mat-menu-item (click)="onDelete(element)" class="delete-option">
                             <mat-icon>delete</mat-icon> <span class="delete-text">Delete</span>
                         </button>
                     </mat-menu>

@@ -47,8 +47,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Check-out</mat-label>
                         <input matInput [matDatepicker]="checkOutPicker" [min]="bookingForm.controls.checkInDate.value"
-                         placeholder="Seleziona data"
-                               formControlName="checkOutDate">
+                               placeholder="Seleziona data" formControlName="checkOutDate">
                         <mat-datepicker-toggle matIconSuffix [for]="checkOutPicker"></mat-datepicker-toggle>
                         <mat-datepicker #checkOutPicker></mat-datepicker>
                     </mat-form-field>
@@ -62,10 +61,20 @@
                 <div class="availability-container">
                     <h2 *ngIf="totalPrice && isAvailable">Prezzo totale: &euro;{{ totalPrice }}</h2>
                     <p *ngIf="totalPrice && isAvailable" style="text-align: center;">Clicca adesso sul pulsante
-                        <b>Prenota</b> <br /> ed effettua la tua
-                        prenotazione</p>
-                    <button mat-raised-button color="primary" (click)="onCheckAvailability()">{{totalPrice ? 'Prenota' :
-                        'Calcola Prezzo'}}</button>
+                        <b>Prenota</b> <br /> ed effettua la tua prenotazione</p>
+
+                    <ng-container *ngIf="isCalculatingPrice; else priceButton">
+                        <div class="spinner-container">
+                            <mat-spinner [diameter]="30"></mat-spinner>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #priceButton>
+                        <button mat-raised-button color="primary" (click)="onCheckAvailability()">
+                            {{ totalPrice ? 'Prenota' : 'Calcola Prezzo' }}
+                        </button>
+                    </ng-template>
+
                     <ng-container *ngIf="showAvailabilityStatus">
                         <span *ngIf="!isAvailable" class="not-available">Nessuna disponibilità</span>
                     </ng-container>
@@ -73,3 +82,4 @@
             </mat-card>
         </div>
     </div>
+</div>

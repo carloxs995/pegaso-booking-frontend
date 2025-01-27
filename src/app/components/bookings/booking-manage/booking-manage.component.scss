@@ -5,7 +5,29 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    align-items: flex-start; // Impedisce di allineare le altezze
+    align-items: flex-start;
+
+    &.loading {
+        justify-content: center;
+    }
+
+    .loading-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 0;
+        height: 100%;
+    }
+
+    .spinner-large {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    .spinner-small {
+        width: 30px !important;
+        height: 30px !important;
+    }
 
     .booking-form-container {
         flex: 2;

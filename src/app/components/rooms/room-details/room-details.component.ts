@@ -18,6 +18,7 @@ import { AuthenticationService } from '../../../services/authentication.service'
 import { LoginComponent } from '../../core/login/login.component';
 import { MatDialog } from '@angular/material/dialog';
 import { combineLatest, forkJoin, Observable } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
     standalone: true,
@@ -32,7 +33,8 @@ import { combineLatest, forkJoin, Observable } from 'rxjs';
         ReactiveFormsModule,
         CommonModule,
         GalleryModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatProgressSpinnerModule
     ],
     templateUrl: './room-details.component.html',
     styleUrls: ['./room-details.component.scss'],
@@ -54,6 +56,7 @@ export class RoomDetailsComponent implements OnInit {
     isAvailable: boolean = false;
     showAvailabilityStatus: boolean = false;
     totalPrice: number = 0;
+    isCalculatingPrice: boolean = false;
 
     readonly TODAY = new Date();
 
@@ -121,6 +124,7 @@ export class RoomDetailsComponent implements OnInit {
 
         if (checkInDate && checkOutDate && guests) {
             if (!this.totalPrice) {
+                this.isCalculatingPrice = true;
                 this._roomsService.checkAvailability(
                     this.room.id,
                     (checkInDate).toISOString(),
@@ -130,6 +134,7 @@ export class RoomDetailsComponent implements OnInit {
                     this.isAvailable = res.data.isAvailable;
                     this.totalPrice = res.data.totalPrice;
                     this.showAvailabilityStatus = true;
+                    this.isCalculatingPrice = false;
                 })
 
                 return;
