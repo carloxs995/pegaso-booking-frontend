@@ -21,6 +21,7 @@ import { BookingsService } from '../../../services/bookings.service';
 import { formatDate } from '../../../helpers/date.helpers';
 import { getStatusInfo } from '../../../helpers/bookings.helpers';
 import { AdminBookingsDeleteDialog } from '../../admin/tabs/admin-bookings-management/admin-bookings-delete-dialog/admin-bookings-delete-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @Component({
@@ -41,7 +42,8 @@ import { AdminBookingsDeleteDialog } from '../../admin/tabs/admin-bookings-manag
         MatPaginatorModule,
         MatDialogModule,
         MatToolbarModule,
-        RouterModule
+        RouterModule,
+        MatProgressSpinnerModule
     ],
     templateUrl: './bookings-list.component.html',
     styleUrl: './bookings-list.component.scss',
@@ -55,6 +57,8 @@ export class BookingsListComponent {
 
     filters: IBookingsFiltersListSchema = {
     };
+
+    isLoading: boolean = true;
 
     serviceTypes = ROOM_TYPE_AVAILABLE;
     statuses = BookingStatuses;
@@ -74,10 +78,12 @@ export class BookingsListComponent {
     }
 
     private _initDataSource(): void {
+        this.isLoading = true;
         this._bookingsService.getBookingsList(this.filters).subscribe(res => {
             this.dataSource = new MatTableDataSource(res.data.items)
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
+            this.isLoading = false;
         })
     }
 

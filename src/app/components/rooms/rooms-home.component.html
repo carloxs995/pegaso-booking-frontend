@@ -1,12 +1,17 @@
 <div class="homepage-container">
     <div class="search-bar">
-        <room-search-bar (onSearch)="onSearch($event)"/>
+        <room-search-bar (onSearch)="onSearch($event)"></room-search-bar>
     </div>
 
-    <div class="cards-container">
+    <div class="cards-container" *ngIf="!isLoading; else loadingSpinner">
         @for(item of roomsList; track item.id) {
-            <app-room-card [item]="item" />
+            <app-room-card [item]="item"></app-room-card>
         }
     </div>
 
+    <ng-template #loadingSpinner>
+        <div class="loading-container">
+            <mat-spinner diameter="60"></mat-spinner>
+        </div>
+    </ng-template>
 </div>

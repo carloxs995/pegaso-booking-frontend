@@ -11,9 +11,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RoomCardComponent } from './room-card/room-card.component';
 import { RoomsService } from '../../services/rooms.service';
-import { BehaviorSubject, map } from 'rxjs';
+import { map } from 'rxjs';
 import { RoomSearchBarComponent } from "./room-search-bar/room-search-bar.component";
 import { IRoomDetails, RoomFilters } from '../../models/room.models';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
     imports: [
@@ -28,7 +29,8 @@ import { IRoomDetails, RoomFilters } from '../../models/room.models';
         MatIconModule,
         RoomCardComponent,
         CommonModule,
-        RoomSearchBarComponent
+        RoomSearchBarComponent,
+        MatProgressSpinnerModule
     ],
     templateUrl: './rooms-home.component.html',
     styleUrl: './rooms-home.component.scss',
@@ -37,6 +39,7 @@ import { IRoomDetails, RoomFilters } from '../../models/room.models';
 export class RoomsHomeComponent implements OnInit {
     roomsList: IRoomDetails[] = [];
     filters: RoomFilters | undefined;
+    isLoading: boolean = true;
 
     private readonly _roomsService: RoomsService = inject(RoomsService);
 
@@ -45,9 +48,13 @@ export class RoomsHomeComponent implements OnInit {
     }
 
     initDataSource() {
+        this.isLoading = true;
         this._roomsService.getRoomsList(this.filters)
             .pipe(map(res => res.data))
-            .subscribe(items => this.roomsList = items);
+            .subscribe(items => {
+                this.isLoading = false;
+                this.roomsList = items
+            });
     }
 
     onSearch(filters: RoomFilters) {
