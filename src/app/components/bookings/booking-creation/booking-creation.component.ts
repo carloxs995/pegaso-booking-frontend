@@ -10,6 +10,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { formatDate } from '../../../helpers/date.helpers';
 import { BookingsService } from '../../../services/bookings.service';
 import { IBookingCreation } from '../../../models/booking.model';
+import { MatCardModule } from '@angular/material/card';
+import { RoomsService } from '../../../services/rooms.service';
+import { IRoomDetails } from '../../../models/room.models';
 
 @Component({
     imports: [
@@ -18,7 +21,8 @@ import { IBookingCreation } from '../../../models/booking.model';
         MatInputModule,
         MatButtonModule,
         MatSelectModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatCardModule
     ], templateUrl: './booking-creation.component.html',
     styleUrl: './booking-creation.component.scss'
 })
@@ -44,23 +48,33 @@ export class BookingCreationComponent {
     private readonly _activatedRoute = inject(ActivatedRoute);
     private readonly _authenticationService = inject(AuthenticationService);
     private readonly _bookingsService = inject(BookingsService);
+    private readonly _roomsService = inject(RoomsService);
+    roomDetails!: IRoomDetails;
 
     ngOnInit(): void {
         this._activatedRoute.paramMap.subscribe(params => {
-            this._activatedRoute.queryParamMap.subscribe(queryParams => {
-              this.bookingForm.patchValue({
-                customerFirstName: this._authenticationService.currentUserData$.value?.firstName,
-                customerLastName: this._authenticationService.currentUserData$.value?.lastName,
-                customerEmail: this._authenticationService.currentUserData$.value?.email,
-                serviceId: params.get('roomId'),
-                checkInDate: queryParams.get('checkInDate'),
-                checkOutDate: queryParams.get('checkOutDate'),
-                quantityGuests: Number(queryParams.get('guests')),
-                serviceName: queryParams.get('serviceName'),
-                servicePrice: queryParams.get('totalPrice'),
-              });
-            });
-          });
+            const roomId = params.get('roomId');
+            if (!roomId) {
+                return;
+            }
+
+            this._roomsService.getRoomDetails(roomId).subscribe(roomDetails => {
+                this.roomDetails = roomDetails;
+                this._activatedRoute.queryParamMap.subscribe(queryParams => {
+                    this.bookingForm.patchValue({
+                        customerFirstName: this._authenticationService.currentUserData$.value?.firstName,
+                        customerLastName: this._authenticationService.currentUserData$.value?.lastName,
+                        customerEmail: this._authenticationService.currentUserData$.value?.email,
+                        serviceId: params.get('roomId'),
+                        checkInDate: queryParams.get('checkInDate'),
+                        checkOutDate: queryParams.get('checkOutDate'),
+                        quantityGuests: Number(queryParams.get('guests')),
+                        serviceName: queryParams.get('serviceName'),
+                        servicePrice: queryParams.get('totalPrice'),
+                    });
+                });
+            })
+        });
     }
 
     onSubmit() {
