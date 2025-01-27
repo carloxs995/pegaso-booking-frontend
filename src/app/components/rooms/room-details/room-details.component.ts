@@ -17,7 +17,7 @@ import { addDays } from '../../../helpers/date.helpers';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { LoginComponent } from '../../core/login/login.component';
 import { MatDialog } from '@angular/material/dialog';
-import { combineLatest, forkJoin, Observable } from 'rxjs';
+import { merge, Observable } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -81,10 +81,10 @@ export class RoomDetailsComponent implements OnInit {
             }
         });
 
-        combineLatest([
+        merge(
             this.bookingForm.controls.checkOutDate.valueChanges,
             this.bookingForm.controls.guests.valueChanges,
-        ]).subscribe(() => {
+        ).subscribe(res => {
             this.isAvailable = false;
             this.totalPrice = 0;
             this.showAvailabilityStatus = false;
