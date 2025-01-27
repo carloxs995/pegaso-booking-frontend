@@ -119,6 +119,9 @@ export class BookingManageComponent {
                 this.bookingForm.patchValue({
                     ...data
                 });
+                if (this.bookingDetails.status === 'cancelled') {
+                    this.bookingForm.disable();
+                }
                 this.isLoading = false;
             })
     }
