@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FirebaseBackendService } from './firebase-backend.service';
-import { IBookingCreation, IBookingListResponse, IBookingsFiltersListSchema } from '../models/booking.model';
+import { IBookingCreation, IBookingDetails, IBookingListResponse, IBookingsFiltersListSchema } from '../models/booking.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -24,5 +24,13 @@ export class BookingsService {
 
     createBooking(booking: IBookingCreation): Observable<{ id: string }> {
         return this._firebaseBackendService.post('/bookings', booking);
+    }
+
+    getBookingDetails(id: string): Observable<IBookingDetails> {
+        return this._firebaseBackendService.get(`/bookings/${id}`);
+    }
+
+    updateBooking(id: string, booking: IBookingCreation): Observable<{ id: string }> {
+        return this._firebaseBackendService.put(`/bookings/${id}`, booking);
     }
 }
