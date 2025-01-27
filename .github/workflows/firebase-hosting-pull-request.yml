@@ -20,13 +20,13 @@ jobs:
       - name: Create environment file
         run: |
           echo "export const environment = {" > src/environment.ts
-          echo "  production: true," >> src/environments/environment.ts
-          echo "  firebaseConfig: {" >> src/environments/environment.ts
-          echo "    apiKey: '${{ secrets.FIREBASE_API_KEY }}'," >> src/environments/environment.ts
-          echo "    projectId: '${{ secrets.FIREBASE_PROJECT_ID }}'," >> src/environments/environment.ts
-          echo "    appId: '${{ secrets.FIREBASE_APP_ID }}'" >> src/environments/environment.ts
-          echo "  }" >> src/environments/environment.ts
-          echo "};" >> src/environments/environment.ts
+          echo "  production: true," >> src/environment.ts
+          echo "  firebaseConfig: {" >> src/environment.ts
+          echo "    apiKey: '${{ secrets.FIREBASE_API_KEY }}'," >> src/environment.ts
+          echo "    projectId: '${{ secrets.FIREBASE_PROJECT_ID }}'," >> src/environment.ts
+          echo "    appId: '${{ secrets.FIREBASE_APP_ID }}'" >> src/environment.ts
+          echo "  }" >> src/environment.ts
+          echo "};" >> src/environment.ts
 
       - name: Build Angular app
         run: npm run build -- --configuration production
