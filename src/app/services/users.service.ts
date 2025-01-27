@@ -13,4 +13,5 @@ export class UsersService {
     getUsersList(pageSize: number = 50, pageToken?: string): Observable<{ data: { items: UserDetails[], pageToken: string | undefined } }> {
         return this._firebaseBackendService.get('/users', { pageSize, pageToken });
     }
+
 }
