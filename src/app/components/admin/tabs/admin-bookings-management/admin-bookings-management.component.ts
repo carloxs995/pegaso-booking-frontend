@@ -73,12 +73,14 @@ export class AdminBookingsManagementComponent {
     }
 
     private _initDataSource(): void {
-        this._bookingsService.getBookingsList(this.filters)
-            .subscribe(res => {
-                this.dataSource = new MatTableDataSource(res.data.items)
-                this.dataSource.sort = this.sort;
-                this.dataSource.paginator = this.paginator;
-            })
+        this._bookingsService.getBookingsList({
+            ...this.filters,
+            isFromAdminArea: true
+        }).subscribe(res => {
+            this.dataSource = new MatTableDataSource(res.data.items)
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+        })
     }
 
     applyFilter(event: Event) {

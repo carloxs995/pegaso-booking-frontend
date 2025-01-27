@@ -30,7 +30,7 @@
                           placeholder="Inserisci eventuali richieste speciali"></textarea>
             </mat-form-field>
 
-            <button *ngIf="bookingDetails.status !== 'cancelled'" mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid">
+            <button *ngIf="!isEditing || bookingDetails?.status !== 'cancelled'" mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid">
                 {{ isEditing ? 'Salva Modifiche' : 'Conferma Prenotazione' }}
             </button>
         </form>
