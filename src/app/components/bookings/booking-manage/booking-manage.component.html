@@ -37,7 +37,7 @@
                               placeholder="Inserisci eventuali richieste speciali"></textarea>
                 </mat-form-field>
 
-                <ng-container *ngIf="isSubmitting; else spinnerTemplate">
+                <ng-container *ngIf="!isSubmitting; else spinnerTemplate">
                     <button *ngIf="!isEditing || bookingDetails?.status !== 'cancelled'" mat-raised-button color="primary"
                         type="submit" [disabled]="bookingForm.invalid">
                         {{ isEditing ? 'Salva Modifiche' : 'Conferma Prenotazione' }}
