@@ -45,6 +45,8 @@ export class RoomDetailsComponent implements OnInit {
 
     room!: IRoomDetails;
 
+    isLoading: boolean = true;
+
     bookingForm = new FormGroup({
         checkInDate: new FormControl(new Date(), Validators.required),
         checkOutDate: new FormControl(addDays(new Date(), 1), Validators.required),
@@ -90,6 +92,8 @@ export class RoomDetailsComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.isLoading = true;
+
         this._activatedRoute.params.subscribe(params => {
             const id = params['id'];
             if (id) {
@@ -99,6 +103,8 @@ export class RoomDetailsComponent implements OnInit {
                         this.galleryImages = this.room.images.map(
                             img => new ImageItem({ src: img, thumb: img })
                         )
+
+                        this.isLoading = false;
                     })
             }
         })
