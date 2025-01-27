@@ -11,6 +11,11 @@
 
             <div class="filter-options">
                 <mat-form-field appearance="outline">
+                    <mat-label>Cerca per Numero Prenotazione</mat-label>
+                    <input matInput [(ngModel)]="filters.id" placeholder="Inserisci ID prenotazione">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
                     <mat-label>Service Type</mat-label>
                     <mat-select [(ngModel)]="filters.serviceName">
                         <mat-option *ngFor="let type of serviceTypes" [value]="type">{{ type }}</mat-option>
@@ -26,34 +31,34 @@
             </mat-action-row>
         </mat-expansion-panel>
     </div>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Numero Prenotazione</th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
         <ng-container matColumnDef="serviceName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Service Type</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo di Stanza</th>
             <td mat-cell *matCellDef="let element">{{ element.serviceName }}</td>
         </ng-container>
 
         <ng-container matColumnDef="checkInDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>CheckIn Date</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Data CheckIn</th>
             <td mat-cell *matCellDef="let element">{{ formatDate(element.checkInDate) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="checkOutDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>CheckOut Date</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Data CheckOut</th>
             <td mat-cell *matCellDef="let element">{{ formatDate(element.checkOutDate) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="customerName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Name</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome Cliente</th>
             <td mat-cell *matCellDef="let element">{{ element.customerFirstName + ' ' + element.customerLastName }}</td>
         </ng-container>
 
         <ng-container matColumnDef="isPaid">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Is Paid</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato Pagamento</th>
             <td mat-cell *matCellDef="let element">
                 <mat-icon color="{{ element.isPaid ? 'primary' : 'warn' }}">
                     {{ element.isPaid ? 'check_circle' : 'cancel' }}
@@ -62,8 +67,15 @@
         </ng-container>
 
         <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-            <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato Prenotazione</th>
+            <td mat-cell *matCellDef="let element" [ngStyle]="{'color':getStatusInfo(element.status).color}">
+                <div class="status-container">
+                    <mat-icon>
+                        {{getStatusInfo(element.status).icon}}
+                    </mat-icon>
+                    {{getStatusInfo(element.status).label}}
+                </div>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">

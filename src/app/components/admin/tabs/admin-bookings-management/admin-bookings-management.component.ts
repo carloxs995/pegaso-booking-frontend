@@ -12,7 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { BookingsService } from '../../../../services/bookings.service';
-import { BookingStatuses, IBookingDetails, IBookingsFiltersListSchema } from '../../../../models/booking.model';
+import { BookingStatus, BookingStatuses, IBookingDetails, IBookingsFiltersListSchema } from '../../../../models/booking.model';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AdminBookingsConfirmPaymentDialogComponent } from './admin-bookings-confirm-payment-dialog/admin-bookings-confirm-payment-dialog.component';
@@ -22,6 +22,7 @@ import { ROOM_TYPE_AVAILABLE } from '../../../../models/room.models';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { map } from 'rxjs';
 import { formatDate } from '../../../../helpers/date.helpers';
+import { getStatusInfo } from '../../../../helpers/bookings.helpers';
 
 @Component({
     selector: 'app-admin-bookings-management',
@@ -64,6 +65,7 @@ export class AdminBookingsManagementComponent {
     private readonly _bookingsService: BookingsService = inject(BookingsService);
 
     formatDate = (date: string): string => formatDate(date);
+    getStatusInfo = (status: BookingStatus) => getStatusInfo(status);
 
     @ViewChild(MatSort) sort: MatSort = new MatSort();
     @ViewChild(MatPaginator) paginator: MatPaginator = new MatPaginator();
@@ -95,19 +97,20 @@ export class AdminBookingsManagementComponent {
             console.log(data, parsedFilter);
             return (
                 (parsedFilter.serviceName ? data.serviceName === parsedFilter.serviceName : true) &&
-                (parsedFilter.isPaid !== false ? data.isPaid === parsedFilter.isPaid : true)
+                (parsedFilter.isPaid !== false ? data.isPaid === parsedFilter.isPaid : true) &&
+                (parsedFilter.id ? data.id === parsedFilter.id : true)
             );
         };
         this.dataSource.filter = JSON.stringify(this.filters);
     }
 
     clearFilters() {
-        this.filters = { serviceName: undefined, isPaid: false };
+        this.filters = { serviceName: undefined, isPaid: false, id: '' };
         this.dataSource.filter = '';
     }
 
     onEdit(booking: IBookingDetails) {
-        this._router.navigate([`/bookings/${booking.id}`]);
+        this._router.navigate([`/bookings/edit/${booking.id}`]);
     }
 
     onConfirmPayment(booking: IBookingDetails) {
