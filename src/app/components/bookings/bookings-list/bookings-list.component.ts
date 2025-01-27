@@ -100,7 +100,4 @@ export class BookingsListComponent {
         this.dataSource.filter = '';
     }
 
-    onEdit(booking: IBookingDetails) {
-        this._router.navigate([`/bookings/${booking.id}`]);
-    }
 }
