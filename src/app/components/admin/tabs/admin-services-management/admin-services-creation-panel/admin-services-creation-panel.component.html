@@ -1,0 +1,63 @@
+<div class="sidenav-header">
+    <h2>{{!isEditMode ? 'Crea Nuovo Servizio' : 'Modifica Servizio' }} </h2>
+    <button mat-icon-button (click)="onPanelClose()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<form [formGroup]="serviceForm" *ngIf="isLoading">
+    <mat-form-field appearance="outline">
+        <mat-label>Tipo di Servizio</mat-label>
+        <mat-select formControlName="type" required [disabled]="isEditMode">
+            @for(service of serviceTypes; track service) {
+            <mat-option [value]="service">{{ service }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Nome Servizio</mat-label>
+        <input matInput formControlName="name" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Descrizione</mat-label>
+        <textarea matInput formControlName="description" rows="3"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Prezzo per Notte</mat-label>
+        <input matInput type="number" formControlName="pricePerNight" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Stanze Totali</mat-label>
+        <input matInput type="number" formControlName="totalRooms" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Ospiti Totali</mat-label>
+        <input matInput type="number" formControlName="capacity" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Servizi Aggiuntivi</mat-label>
+        <mat-chip-grid #chipGrid aria-label="Lista servizi aggiuntivi">
+            <mat-chip-row *ngFor="let service of selectedServices" (removed)="removeRoomServices(service)">
+                {{service}}
+                <button matChipRemove aria-label="Remove">&times;</button>
+            </mat-chip-row>
+            <input placeholder="Aggiungi servizio" [matChipInputFor]="chipGrid"
+                   (matChipInputTokenEnd)="addRoomServices($event)">
+        </mat-chip-grid>
+    </mat-form-field>
+
+    <div class="image-upload-container">
+        <app-image-uploader [imagesUrls]="serviceForm.get('images')?.value" />
+    </div>
+
+    <div class="action-buttons">
+        <button mat-button (click)="onPanelClose()">Annulla</button>
+        <button mat-raised-button color="primary" type="submit" (click)="onSubmitForm()">Salva</button>
+    </div>
+</form>

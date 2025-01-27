@@ -14,15 +14,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { IRoomDetails, ROOM_TYPE_AVAILABLE } from '../../../../models/room.models';
+import { IRoomDetails } from '../../../../models/room.models';
 import { RoomsService } from '../../../../services/rooms.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { MatChipsModule, MatChipInputEvent } from '@angular/material/chips';
-import { getStorage } from 'firebase/storage';
-import { ImageService } from '../../../../services/image.service';
-import { ImageUploaderComponent } from "../../../core/image-uploader/image-uploader.component";
-import { concatMap, from } from 'rxjs';
+import { MatSidenav } from '@angular/material/sidenav';
+import { SidenavService } from '../../../../services/sidenav.service';
+import { AdminServicesCreationPanelComponent } from './admin-services-creation-panel/admin-services-creation-panel.component';
 
 @Component({
     selector: 'app-admin-services-management',
@@ -43,10 +40,6 @@ import { concatMap, from } from 'rxjs';
         MatPaginatorModule,
         MatDialogModule,
         MatToolbarModule,
-        MatSidenavModule,
-        ReactiveFormsModule,
-        MatChipsModule,
-        ImageUploaderComponent
     ],
     templateUrl: './admin-services-management.component.html',
     styleUrl: './admin-services-management.component.scss'
@@ -57,35 +50,17 @@ export class AdminServicesManagementComponent {
     displayedColumns: string[] = ['id', 'name', 'type', 'totalRooms', 'actions'];
 
     dataSource: MatTableDataSource<IRoomDetails> = new MatTableDataSource();
-    selectedServices: string[] = [];
-
-    serviceTypes = ROOM_TYPE_AVAILABLE;
-
-    isEditMode: boolean = false;
 
     private readonly _router: Router = inject(Router);
     private readonly _roomService: RoomsService = inject(RoomsService);
-    private readonly _formBuilder: FormBuilder = inject(FormBuilder);
+    readonly sideNavService: SidenavService = inject(SidenavService);
 
     @ViewChild(MatSort) sort: MatSort = new MatSort();
     @ViewChild(MatPaginator) paginator: MatPaginator = new MatPaginator();
-    @ViewChild('sideNavPanel') sideNavPanel!: MatSidenav;
-    @ViewChild(ImageUploaderComponent, { read: ImageUploaderComponent }) imageUploader!: ImageUploaderComponent;
-
-    serviceForm: FormGroup = this._formBuilder.group({
-        id: [''],
-        type: ['', Validators.required],
-        name: ['', [Validators.required, Validators.minLength(3)]],
-        description: [''],
-        capacity: ['', [Validators.required, Validators.min(1)]],
-        pricePerNight: ['', [Validators.required, Validators.min(1)]],
-        totalRooms: ['', [Validators.required, Validators.min(1)]],
-        amenities: ['', [Validators.required]],
-        images: [[], [Validators.required, Validators.minLength(1), Validators.maxLength(5)]]
-    });
 
     ngOnInit() {
         this._initDataSource();
+        this.listenOnCloseSideNav();
     }
 
     private _initDataSource(): void {
@@ -100,71 +75,16 @@ export class AdminServicesManagementComponent {
         this._router.navigate([`/rooms/${service.id}`])
     }
 
-    onEdit(service: IRoomDetails) {
-        this.isEditMode = true;
-        this._roomService.getRoomDetails(service.id)
-            .subscribe((res) => {
-                const { type, name, description, capacity, pricePerNight, totalRooms, amenities, images } = res;
-                this.serviceForm.setValue({ id: service.id, type, name, description, capacity, pricePerNight, totalRooms, amenities, images: images || [] });
-                this.serviceForm.updateValueAndValidity();
-                this.openPanel();
-                this.selectedServices = amenities;
-            })
-    }
-
-    onCreateService(): void {
-        this.isEditMode = false;
-        this.serviceForm.setValue({
-            id: '',
-            type: '',
-            name: '',
-            description: '',
-            capacity: '',
-            pricePerNight: '',
-            totalRooms: '',
-            amenities: '',
-            images: []
-        });
-        this.selectedServices = [];
-
-        this.serviceForm.updateValueAndValidity();
-        this.openPanel();
-    }
-
-    openPanel(): void {
-        this.sideNavPanel.toggle();
-    }
-
-    async onSubmitForm() {
-        console.log(this.serviceForm.getRawValue());
-        const imagesUrl = await this.imageUploader.saveChanges();
-        console.log(imagesUrl);
-        this.serviceForm.get('images')?.setValue(imagesUrl);
-
-        const apiToCall = this.isEditMode ?
-            this._roomService.updateRoom(this.serviceForm.getRawValue()) :
-            this._roomService.createRoom(this.serviceForm.getRawValue());
-
-        apiToCall
-            .pipe(concatMap(() => apiToCall))
-            .subscribe(() => {
-                this.sideNavPanel.close().then(() => this._initDataSource());
-            })
-    }
-
-    removeRoomServices(service: string): void {
-        const index = this.selectedServices.indexOf(service);
-        if (index >= 0) {
-            this.selectedServices.splice(index, 1);
+    openPanel(isNewService: boolean, item?: IRoomDetails): void {
+        const data = {
+            isNewService,
+            item
         }
+
+        this.sideNavService.openSidenav(AdminServicesCreationPanelComponent, data);
     }
 
-    addRoomServices(event: MatChipInputEvent): void {
-        const value = (event.value || '').trim();
-        if (value && !this.selectedServices.includes(value)) {
-            this.selectedServices.push(value);
-        }
-        event.chipInput!.clear();
-        this.serviceForm.controls['amenities'].setValue(this.selectedServices);
+    listenOnCloseSideNav() {
+        this.sideNavService.isSidenavOpen$.subscribe(close => (!close && this._initDataSource()));
     }
 }
