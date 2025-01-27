@@ -82,6 +82,11 @@ Modale di registrazione consente ai nuovi utenti di creare un account per effett
 
 ---
 
+## Admin Area
+Accessibile cliccando sopra l'avatar utente
+![Admin Area Link](screenshots/user-menu.png)
+__
+
 ### Nuova Stanza - Admin
 Gli amministratori possono aggiungere nuove stanze specificando tutti i dettagli e caricando immagini.
 ![Nuova stanza - Admin](screenshots/admin-area.png)
