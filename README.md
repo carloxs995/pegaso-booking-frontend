@@ -10,10 +10,6 @@ L'applicazione consente agli utenti di visualizzare le stanze disponibili, effet
 ## HOSTING APPLICAZIONE
 L'app è accessibile all'indirizzo `https://pegaso-booking.web.app/`.
 
-Utenza Admin di demo:
-- username: admin@admin.it
-- password: admin
-
 ## Tecnologie Utilizzate
 
 - **Framework Frontend:** Angular 19
