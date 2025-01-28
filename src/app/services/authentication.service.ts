@@ -16,7 +16,7 @@ export class AuthenticationService {
     private readonly _firebaseBackendService: FirebaseBackendService = inject(FirebaseBackendService);
 
     loginWithEmail(credentials: { username: string, password: string }): Observable<UserDetails> {
-        return from(signInWithEmailAndPassword(this._auth, credentials.username, credentials.password))
+        return from(signInWithEmailAndPassword(this._auth, credentials.username, credentials.password)) //imported from 'firebase/auth'
             .pipe(
                 concatMap(() => this.getUserInfo()),
                 catchError(e => {

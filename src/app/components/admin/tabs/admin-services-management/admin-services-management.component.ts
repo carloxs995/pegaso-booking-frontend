@@ -112,7 +112,17 @@ export class AdminServicesManagementComponent {
         this.isEditMode = true;
         this._roomService.getRoomDetails(service.id)
             .subscribe((res) => {
-                this.serviceForm.setValue(res);
+                this.serviceForm.setValue({
+                    id: res.id,
+                    type: res.type,
+                    name: res.name,
+                    description: res.description,
+                    capacity: res.capacity,
+                    pricePerNight: res.pricePerNight,
+                    totalRooms: res.totalRooms,
+                    amenities: res.amenities || [],
+                    images: res.images || []
+                });
                 this.serviceForm.updateValueAndValidity();
                 this.openPanel();
                 this.selectedServices = res.amenities;

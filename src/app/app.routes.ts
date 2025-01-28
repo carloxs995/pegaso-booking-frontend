@@ -20,7 +20,7 @@ export const routes: Routes = [
     {
         path: 'bookings',
         canActivateChild: [
-            () => !!inject(AuthenticationService).currentUserData$.value
+            () => !!inject(AuthenticationService).currentUserData$.value //Check if the User has a valid Login
         ],
         children: [
             {
@@ -46,7 +46,7 @@ export const routes: Routes = [
     {
         path: 'admin',
         canActivateChild: [
-            () => inject(AuthenticationService).currentUserData$.value?.role === UserRole.ADMIN
+            () => inject(AuthenticationService).currentUserData$.value?.role === UserRole.ADMIN //Check if the User is Admin
         ],
         children: [
             {
