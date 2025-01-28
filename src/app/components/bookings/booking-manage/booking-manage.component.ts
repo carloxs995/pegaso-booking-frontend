@@ -44,7 +44,7 @@ export class BookingManageComponent {
         customerFirstName: new FormControl('', [Validators.required]),
         customerLastName: new FormControl('', [Validators.required]),
         customerEmail: new FormControl('', [Validators.required, Validators.email]),
-        customerPhone: new FormControl('', [Validators.required, Validators.pattern(/^(\+\d{1,3}[- ]?)?\d{10}$/), Validators.maxLength(13)]),
+        customerPhone: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(13)]),
         serviceName: new FormControl({ value: '', disabled: true }, Validators.required),
         quantityGuests: new FormControl({ value: 0, disabled: true }, Validators.required),
         checkInDate: new FormControl({ value: '', disabled: true }, Validators.required),

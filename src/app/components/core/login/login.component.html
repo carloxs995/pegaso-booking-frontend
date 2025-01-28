@@ -6,8 +6,8 @@
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" type="email" placeholder="Inserisci la tua email">
             <mat-error
-                       *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched && authForm.get('password')?.dirty">
-                Email non valida
+                       *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched">
+                Email non valida (formato accettato)
             </mat-error>
         </mat-form-field>
 
@@ -15,36 +15,36 @@
             <mat-label>Password</mat-label>
             <input matInput formControlName="password" type="password" placeholder="Inserisci la tua password">
             <mat-error
-                       *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched && authForm.get('password')?.dirty">
+                       *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched">
                 La password è obbligatoria
             </mat-error>
         </mat-form-field>
 
         <ng-container *ngIf="isSignUp">
-            <mat-form-field appearance="outline">
+            <!-- <mat-form-field appearance="outline">
                 <mat-label>Conferma Password</mat-label>
                 <input matInput formControlName="confirmPassword" type="password"
                        placeholder="Conferma la tua password">
-                <mat-error *ngIf="authForm.hasError('passwordMismatch') && authForm.get('confirmPassword')?.dirty">
+                <mat-error *ngIf="authForm.hasError('passwordMismatch')">
                     Le password non coincidono
                 </mat-error>
-            </mat-form-field>
+            </mat-form-field> -->
 
             <mat-form-field appearance="outline">
                 <mat-label>Nome</mat-label>
-                <input matInput formControlName="firstName" type="text" placeholder="Inserisci il tuo nome">
+                <input matInput formControlName="firstName" type="text" placeholder="Inserisci il tuo nome (min 3 caratteri)">
                 <mat-error
-                           *ngIf="authForm.get('firstName')?.invalid && authForm.get('firstName')?.touched && authForm.get('firstName')?.dirty">
-                    Nome obbligatorio
+                           *ngIf="authForm.get('firstName')?.invalid && authForm.get('firstName')?.touched">
+                    Nome obbligatorio (min 3 caratteri)
                 </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label>Cognome</mat-label>
-                <input matInput formControlName="lastName" type="text" placeholder="Inserisci il tuo cognome">
+                <input matInput formControlName="lastName" type="text" placeholder="Inserisci il tuo cognome (min 3 caratteri)">
                 <mat-error
-                           *ngIf="authForm.get('lastName')?.invalid && authForm.get('lastName')?.touched && authForm.get('lastName')?.dirty">
-                    Cognome obbligatorio
+                           *ngIf="authForm.get('lastName')?.invalid && authForm.get('lastName')?.touched">
+                    Cognome obbligatorio (min 3 caratteri)
                 </mat-error>
             </mat-form-field>
         </ng-container>

@@ -117,12 +117,12 @@ export class LoginComponent {
             this.authForm.get('confirmPassword')?.addValidators([Validators.required]);
             this.authForm.get('firstName')?.addValidators([Validators.required, Validators.minLength(3)]);
             this.authForm.get('lastName')?.addValidators([Validators.required, Validators.minLength(3)]);
-            this.authForm.addValidators(this.passwordMatchValidator)
+            // this.authForm.addValidators(this.passwordMatchValidator)
         } else {
             this.authForm.get('confirmPassword')?.clearValidators();
             this.authForm.get('firstName')?.clearValidators();
             this.authForm.get('lastName')?.clearValidators();
-            this.authForm.removeValidators(this.passwordMatchValidator)
+            // this.authForm.removeValidators(this.passwordMatchValidator)
         }
         this.authForm.updateValueAndValidity();
     }
