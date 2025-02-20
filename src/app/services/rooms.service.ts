@@ -23,7 +23,7 @@ export class RoomsService {
     }
 
     getRoomDetails(id: string): Observable<IRoomDetails> {
-        return this._firebaseBackendService.get(`/rooms/${id}/details`);
+        return this._firebaseBackendService.get(`/rooms/${id}`);
     }
 
     checkAvailability(id: string, checkInDate: string, checkOutDate: string, quantityGuests: number): Observable<{ data: IRoomsAvailability }> {
